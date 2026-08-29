@@ -1,0 +1,26 @@
+# Private working notes — NOT for the public repo.
+# The public version of this thinking is docs/origin.md.
+Just-in-Time Skills Runtime.md
+plans/
+*.private.md
+.obsidian/
+
+# Scratch
+scratch/
+tmp/
+*.log
+
+# Python (catalog generator, later)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Node (if the generator ends up JS)
+node_modules/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
