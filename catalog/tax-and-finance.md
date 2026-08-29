@@ -104,7 +104,7 @@ Navigate the Israeli pension and savings system including pension funds (keren p
 Generate compliant Hebrew price quotes (hatzaat mechir / הצעת מחיר) for Israeli freelancers and small businesses. Use when user asks to create a price quote, quote a client, build a pre-sale proposal with VAT, send a hatzaat mechir, or draft a הצעת מחיר. Covers 18% VAT math (or VAT-exempt for oseik patur), validity period (תוקף ההצעה), payment terms aligned with Chok Moser Tashlumim leSapakim 5777-2017 (the Late Payment Law: shotef+30, statutory default shotef+45 for B2B), oseik murshe vs oseik patur header rules, escalation and cancellation clauses, Bit/PayBox/bank transfer payment details, and bilingual HE/EN layout. Outputs ready-to-send Hebrew markdown or printable HTML. Do NOT use for government tender proposals (use israeli-tender-proposal-builder), for generating actual tax invoices after the quote is accepted (use green-invoice), or for chasing unpaid invoices (use israeli-client-payment-chaser).
 `https://raw.githubusercontent.com/skills-il/tax-and-finance/master/israeli-price-quote-generator/SKILL.md`
 
-## israeli-property-appraisal  `Si`
+## israeli-property-appraisal  `Sx`
 >-
 `https://raw.githubusercontent.com/skills-il/tax-and-finance/master/israeli-property-appraisal/SKILL.md`
 
@@ -148,7 +148,7 @@ Integrate Pelecard payment processing into Israeli web and mobile apps -- covers
 Convert currencies to/from Israeli New Shekel (NIS/ILS) using Bank of Israel official representative rates (shaar yatzig). Use when user asks to convert shekels, NIS, ILS, asks about exchange rates, "shaar yatzig" (representative rate), or needs currency conversion for Israeli tax or business purposes. Covers the official Bank of Israel published currencies (14 currencies) with current and historical (tax-date) rates. Do NOT use for cryptocurrency or unofficial money exchange rates.
 `https://raw.githubusercontent.com/skills-il/tax-and-finance/master/shekel-currency-converter/SKILL.md`
 
-## tase-stock-analysis  `Si`
+## tase-stock-analysis  `Sx`
 Analyze Israeli stocks on TASE (Tel Aviv Stock Exchange), track TA-35 and TA-125 indices, and evaluate dual-listed companies (TASE + NASDAQ). Use when user asks about Israeli stocks, "boorsa", "TA-35", "TASE", Maya filings, dual-listed companies, or Israeli capital gains tax on securities. Provides index composition, Maya (TASE disclosure) filings lookup, capital gains tax calculations (25% on securities), and Bank of Israel interest rate context for valuation. Do NOT use for general international stock analysis unrelated to Israel, or for cryptocurrency trading.
 `https://raw.githubusercontent.com/skills-il/tax-and-finance/master/tase-stock-analysis/SKILL.md`
 

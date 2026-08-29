@@ -33,7 +33,10 @@ CATEGORY_ORDER = ["tax-and-finance", "government-services", "legal-tech", "accou
                   "localization", "communication", "marketing-growth",
                   "security-compliance", "developer-tools", "courses"]
 
-NET = re.compile(r"\b(requests\.|urllib|httpx|aiohttp|http\.client|socket\.|fetch\()", re.I)
+NET   = re.compile(r"requests\.|urllib|httpx|aiohttp|http\.client|socket\.", re.I)
+# Route C markers: the call needs credentials, or it writes. Neither survives a browser sandbox.
+AUTH  = re.compile(r"api[_-]?key|apikey|bearer|authorization|os\.environ|getenv|client_secret|oauth|password", re.I)
+WRITE = re.compile(r"requests\.(post|put|patch|delete)|\.post\(|\.put\(|[\"']POST[\"']|[\"']PUT[\"']", re.I)
 
 
 def get(url, raw=False):
@@ -95,10 +98,22 @@ def parse_frontmatter(body):
 
 
 def classify(py_sources):
-    """Sc = compute-bearing (portable). Si = does I/O (needs the network)."""
+    """Route the skill by what its scripts do.
+
+      -   no scripts        -> instructions only
+      Sc  pure computation  -> route A, port the logic. Needs no network.
+      Si  plain GET         -> route B, extract the contract and make the real call.
+      Sx  auth and/or write -> route C, out of reach in a browser. Honest handoff.
+
+    Caveat this cannot fix: the flag describes the SCRIPTS, not the skill's data
+    needs. A skill with no scripts may still depend on rates that go stale.
+    """
     if not py_sources:
         return "-"
-    return "Si" if any(NET.search(s) for s in py_sources) else "Sc"
+    blob = "\n".join(py_sources)
+    if not NET.search(blob):
+        return "Sc"
+    return "Sx" if (AUTH.search(blob) or WRITE.search(blob)) else "Si"
 
 
 def hebrew_terms():
@@ -164,7 +179,8 @@ def build():
         rs = by_repo[repo]
         slugs = ", ".join(sorted(r["slug"] for r in rs)[:6])
         L.append(f"- **{repo}** ({len(rs)}) — e.g. {slugs}…")
-    L += ["", f"Flags: `Sc` port the logic and compute · `Si` extract the request contract · `-` instructions only.",
+    L += ["", "Flags: `-` instructions only · `Sc` port the logic and compute · "
+          "`Si` extract the contract, make the real call · `Sx` needs auth or writes, out of reach here.",
           f"Generated from github.com/{ORG} — {len(rows)} skills."]
     open(os.path.join(OUT, "_index.md"), "w", encoding="utf-8").write("\n".join(L))
 

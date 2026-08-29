@@ -44,7 +44,7 @@ End-to-end guide for Israelis choosing or living digital-nomad life abroad while
 >-
 `https://raw.githubusercontent.com/skills-il/government-services/master/israeli-discharged-soldier-navigator/SKILL.md`
 
-## israeli-drug-database  `Si`
+## israeli-drug-database  `Sx`
 Query the Israeli pharmaceutical database for drug information, health basket coverage, generic alternatives, and pricing. Use when user asks about Israeli medications, "trufot", drug names, "sal briut" drug coverage, generic drugs, drug prices in Israel, prescription requirements, or medication safety info. Enhances the israel-drugs MCP server with health basket context and patient-facing guidance. Do NOT use for medical advice, dosage recommendations, or diagnosis. Do NOT use for non-Israeli drug registries.
 `https://raw.githubusercontent.com/skills-il/government-services/master/israeli-drug-database/SKILL.md`
 

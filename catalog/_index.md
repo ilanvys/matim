@@ -17,5 +17,5 @@ Pick 1-2 categories, then read only those files. Never read them all.
 - **developer-tools** (30) — e.g. cloudinary-assets, github-actions-il, hebrew-chatbot-builder, hebrew-llm-eval-suite, hebrew-ml-datasets-navigator, hebrew-voice-bot-builder…
 - **courses** (7) — e.g. ai-agents-for-everyone, israeli-freelancer-year, israeli-pension-decoded, making-aliyah-first-90-days, miluim-rights-and-money, sample-course…
 
-Flags: `Sc` port the logic and compute · `Si` extract the request contract · `-` instructions only.
+Flags: `-` instructions only · `Sc` port the logic and compute · `Si` extract the contract, make the real call · `Sx` needs auth or writes, out of reach here.
 Generated from github.com/skills-il — 209 skills.

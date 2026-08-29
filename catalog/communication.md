@@ -28,7 +28,7 @@ Not legal advice and not employment-law advice. Aggregate Israeli job market dat
 A smart personal assistant that understands the Israeli context: workday planning (Sunday-Thursday), drafting messages in natural Hebrew, reminders for business obligations (VAT, Bituach Leumi, holidays), and help composing emails to official bodies. Use when you need a morning brief, professional WhatsApp drafting, scheduling around Shabbat and holidays, or writing formal Hebrew emails. Saves daily time and prevents communication missteps. Do NOT use for calendar API integration (use shabbat-aware-scheduler), automated email sending (use gws-hebrew-email-automation), or accounting calculations (use accounting skills).
 `https://raw.githubusercontent.com/skills-il/communication/master/israeli-personal-assistant/SKILL.md`
 
-## israeli-sms-gateway  `Si`
+## israeli-sms-gateway  `Sx`
 Integrate with Israeli SMS gateway providers for business messaging, OTP, and notifications. Use when user asks about sending SMS in Israel, Israeli SMS providers, phone number validation (Israeli format), Hebrew SMS segment cost, OTP implementation, bulk SMS, sender ID rules, or SMS marketing compliance. Covers 019 SMS, InforUMobile, SMS4Free, and international providers with Israeli support. Do NOT use for WhatsApp Business API (see separate skill) or non-Israeli telecom.
 `https://raw.githubusercontent.com/skills-il/communication/master/israeli-sms-gateway/SKILL.md`
 
@@ -40,7 +40,7 @@ Compare cellular plans, internet packages, TV bundles, and triple deals across a
 Set up Telegram bots for Israeli small businesses with appointment booking, order management, FAQ auto-replies in Hebrew, business hours awareness (Sunday-Thursday), payment links, and customer notifications. Use when an Israeli business owner asks about creating a Telegram bot, automating customer replies, taking orders via Telegram, or scheduling appointments through a bot. Helps non-technical users deploy a working business bot without writing code, reducing missed customer messages and manual response overhead. Do NOT use for WhatsApp Business (use israeli-whatsapp-business), building bots from code (use telegram-bot-builder), voice bots (use hebrew-voice-bot-builder), or general support ticket routing (use israeli-customer-support-automator).
 `https://raw.githubusercontent.com/skills-il/communication/master/israeli-telegram-business-bot/SKILL.md`
 
-## israeli-whatsapp-business  `Si`
+## israeli-whatsapp-business  `Sx`
 Integrate WhatsApp Business API for the Israeli market with Hebrew message templates, customer communication, and CRM integration. Use when user asks about WhatsApp Business in Israel, Hebrew WhatsApp templates, WhatsApp marketing to Israeli customers, business messaging via WhatsApp, or integrating WhatsApp with Israeli CRM tools (Monday.com, Priority, etc.). Covers Cloud API setup, template creation, conversation pricing, compliance with Israeli anti-spam law and Privacy Law Amendment 13, and Israeli consumer communication preferences. Do NOT use for personal WhatsApp or non-Israeli WhatsApp markets.
 `https://raw.githubusercontent.com/skills-il/communication/master/israeli-whatsapp-business/SKILL.md`
 

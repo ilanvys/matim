@@ -52,6 +52,84 @@ The first column is why this is worth building. The second is why it's buildable
 4. **Honest about "temporary".** In web chat nothing is installed, so nothing needs uninstalling. No theatrical cleanup step.
 5. **Never emit a value as retrieved that wasn't retrieved.** Computing from logic is fine. Computing from imagination never is.
 
+## What's actually in the catalog
+
+Measured 2026-08-29 by [`tools/build_catalog.py`](tools/build_catalog.py) against the live org:
+**209 skills across 14 categories.** Every one has consistent frontmatter, and every raw URL
+resolves.
+
+### How much of it can a browser chat actually use?
+
+The catalog ships Python alongside its instructions, and browser chat can't run Python. But
+"can't execute" and "can't answer" are different problems, so each skill is classified by what
+its scripts actually do:
+
+| Flag | What the scripts do | Count | What we do instead | Works in browser chat? |
+|---|---|---|---|---|
+| `Sc` | pure computation | **119** (57%) | port the logic and compute the answer | ✅ equivalent to running it |
+| `-` | no scripts at all | **68** (33%) | follow the instructions | ✅ nothing to run |
+| `Si` | plain unauthenticated GET | **14** (7%) | read the request contract, make the real call | ⚠️ depends on fetch rules |
+| `Sx` | needs credentials, or writes | **12** (6%) | honest handoff — answer as far as we can, then point to the real thing | ❌ genuinely out of reach |
+
+**90% of the catalog is reachable without any network call beyond fetching the skill itself.**
+That is the number that makes a browser-only version worth building.
+
+<details>
+<summary><strong>The 14 <code>Si</code> skills</strong> — need a live call to answer fully</summary>
+
+`israel-gov-api` · `israeli-drug-database` · `israeli-election-data` · `israeli-public-transit` ·
+`israeli-statistics` · `boi-economic-data` · `shekel-currency-converter` ·
+`israeli-property-appraisal`\* · `pelecard-payment-gateway`\* · `tranzila-payment-gateway`\* ·
+`israeli-accessibility-compliance` · `shabbat-aware-scheduler` · `hebrew-survey-builder` ·
+`israeli-shelter-guide`
+
+\* the payment gateways almost certainly need credentials in real use — the classifier only sees
+what's in the first three scripts. See the caveat below.
+</details>
+
+<details>
+<summary><strong>The 12 <code>Sx</code> skills</strong> — out of reach in a browser, by design</summary>
+
+`green-invoice` · `israeli-sms-gateway` · `israeli-whatsapp-business` · `cloudinary-assets` ·
+`hebrew-chatbot-builder` · `jfrog-devops` · `israeli-heritage-explorer` ·
+`israeli-tech-interview-prep` · `tase-stock-analysis` · and 3 more
+
+These send messages, upload files, or authenticate against a paid account. They are what a
+local runtime is *for*; a browser tab should not be doing them.
+</details>
+
+### Who the catalog is for
+
+Grouping the 14 categories by who asks the question:
+
+| | Categories | Skills |
+|---|---|---|
+| **Everyday life** | tax-and-finance (40), government-services (30), legal-tech (18), accounting (14), health-services (11), education (6), travel (4), food-and-dining (3) | **126** (60%) |
+| **Professional / technical** | developer-tools (30), marketing-growth (13), localization (12), communication (11), security-compliance (10), courses (7) | **83** (40%) |
+
+**But that table undercounts the first row, and the reason matters.** The categories describe a
+skill's technical domain, not its audience. Sorted by who actually asks:
+
+- `israeli-shelter-guide` and `pikud-haoref-safety-protocols` sit in **security-compliance**
+- `israeli-apartment-hunting` and `israeli-wedding-planner` sit in **localization**
+- `israeli-cv-builder`, `israeli-job-market`, `israeli-telecom-comparator` sit in **communication**
+- `israeli-pension-decoded`, `miluim-rights-and-money`, `making-aliyah-first-90-days` sit in **courses**
+
+Every one of those is an ordinary-life question filed under an engineering label. Which is a
+finding about the *routing problem*, not a complaint about the catalog: the person asking where
+their nearest bomb shelter is will never think "security compliance", and neither would a router
+matching on category names alone.
+
+### Two things the flags do not tell you
+
+**The flag describes the scripts, not the skill's data needs.** A skill marked `-` has no
+fetching problem — but if its instructions embed 2026 tax brackets, it still has a *staleness*
+problem. Nothing here measures that.
+
+**The classifier is a regex over at most three scripts per skill.** A script reaching the
+network through a helper import gets misfiled. Treat the split as a good estimate that needs a
+manual pass, not a fact — it decides whether an answer is computed or retrieved.
+
 ## Repo map
 
 | Path | What |

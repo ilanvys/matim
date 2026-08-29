@@ -4,7 +4,7 @@
 Descriptions are the authors' own, unedited -- including the "Do NOT use for" clauses,
 which are load-bearing: they are how you tell near-misses apart.
 
-## cloudinary-assets  `Si`
+## cloudinary-assets  `Sx`
 Manage media assets through Cloudinary's REST API -- upload, transform, optimize, and deliver images and videos. Use when user asks about image upload, media optimization, image transformations, responsive images, video management, CDN delivery, or mentions Cloudinary specifically. Covers Upload API, Admin API, URL-based transformations, AI-powered effects (gen_remove, gen_replace, background removal), and delivery optimization. Israeli-founded (2012) with R&D in Petah Tikva; global HQ in San Jose, California. Do NOT use for non-Cloudinary media hosting or local image processing without cloud upload.
 `https://raw.githubusercontent.com/skills-il/developer-tools/master/cloudinary-assets/SKILL.md`
 
@@ -12,7 +12,7 @@ Manage media assets through Cloudinary's REST API -- upload, transform, optimize
 CI/CD workflow templates tailored for Israeli development teams, including Shabbat/holiday-aware deployment schedules ("shabbat deploy freeze", "hakpaaat prisa"), Hebrew Slack/Teams notifications, Israeli compliance checks (IS-5568 accessibility, Privacy Protection Authority), Monday.com issue sync, and reusable composite actions for Israeli startup stacks. Use when user asks to "set up CI/CD for Israeli team", "add Shabbat deploy freeze", "configure Hebrew notifications in GitHub Actions", "hakpaat prisa beshabbat", "add IS-5568 check to pipeline", "Israeli compliance CI", or "create workflow for Vercel fra1". Supports Israeli work week (Sunday-Thursday) scheduling and Hebrew locale awareness. Do NOT use for JFrog Artifactory pipelines (use jfrog-devops), general GitHub repository management, non-CI/CD GitHub Actions, or Jenkins/CircleCI/GitLab CI configurations.
 `https://raw.githubusercontent.com/skills-il/developer-tools/master/github-actions-il/SKILL.md`
 
-## hebrew-chatbot-builder  `Si`
+## hebrew-chatbot-builder  `Sx`
 Build conversational AI chatbots with native Hebrew support, including WhatsApp Business API integration, Telegram bot scaffolding, web chat widgets, Hebrew NLP patterns, and RTL chat UI components. Prevents common Hebrew chatbot mistakes like broken RTL alignment, incorrect gender inflections, and poor tokenization of prefixed prepositions that break intent detection. Use when user asks to "build a Hebrew chatbot", "integrate WhatsApp bot in Hebrew", "binui bot b'ivrit", or design conversation flows for Hebrew speakers. Covers intent detection for Hebrew morphology, entity extraction for Israeli data (NIS amounts, phone numbers, dates), and gender-aware responses. Do NOT use for non-Hebrew chatbots or general NLP pipelines without a Hebrew component.
 `https://raw.githubusercontent.com/skills-il/developer-tools/master/hebrew-chatbot-builder/SKILL.md`
 
@@ -80,7 +80,7 @@ Generate Excel and Google Sheets spreadsheets with Israeli tax calculations, VAT
 Not legal advice and not tax advice. Guide Israeli startup operations including company formation, Innovation Authority grants, investment agreements, R&D tax benefits, and employee stock options (Option 102). Use when user asks about starting a company in Israel, IIA grants, "Innovation Authority", SAFE agreements (Israeli), convertible notes, Option 102, employee stock options in Israel, R&D tax benefits, preferred enterprise, Yozma 2.0, Delaware flip, or Israeli startup legal/financial setup. Do NOT use for non-Israeli company formation or international tax advice. Always recommend consulting with Israeli lawyer and accountant for binding decisions.
 `https://raw.githubusercontent.com/skills-il/developer-tools/master/israeli-startup-toolkit/SKILL.md`
 
-## jfrog-devops  `Si`
+## jfrog-devops  `Sx`
 Manage JFrog Artifactory repositories, artifacts, Docker registry, build info, ML model registry (JFrog ML / AI Catalog), and Xray security scanning for DevOps and MLOps workflows. Use when user asks about JFrog, Artifactory, Xray, Curation, Frogbot, JFrog ML, AI Catalog, artifact management, "deploy artifact", Docker registry with Artifactory, Hugging Face / MLflow model registry, build promotion, vulnerability scanning, SBOM (SPDX/CycloneDX/VEX), or DevOps artifact pipeline. Covers REST API operations, JFrog CLI usage, Docker registry configuration, OIDC with GitHub Actions, and security scanning patterns. Do NOT use for general Docker or CI/CD questions unrelated to JFrog.
 `https://raw.githubusercontent.com/skills-il/developer-tools/master/jfrog-devops/SKILL.md`
 

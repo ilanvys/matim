@@ -4,7 +4,7 @@
 Descriptions are the authors' own, unedited -- including the "Do NOT use for" clauses,
 which are load-bearing: they are how you tell near-misses apart.
 
-## green-invoice  `Si`
+## green-invoice  `Sx`
 Integrate Green Invoice (Morning) API for Israeli invoicing, receipts, client management, and payment processing. Use when user asks to create invoices via Green Invoice, generate hashbonit mas through Morning API, manage clients in Green Invoice, set up webhook automation for document creation, query documents or expenses, or mentions "Green Invoice", "Morning", "hashbonit yeruka", "greeninvoice API", Israeli cloud invoicing, or needs to create tax invoice-receipt (cheshbonit mas/kabala). Covers all 15 document types, 8 payment types, client CRUD, item catalog, and webhook integration. Do NOT use for SHAAM allocation numbers or Tax Authority e-invoice compliance (use israeli-e-invoice), Cardcom payment processing (use cardcom-payment-gateway), or Tranzila integration (use tranzila-payment-gateway).
 `https://raw.githubusercontent.com/skills-il/accounting/master/green-invoice/SKILL.md`
 
