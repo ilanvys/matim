@@ -21,6 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, ".cache")
 OUT = os.path.join(ROOT, "catalog")
 HE_TERMS = os.path.join(ROOT, "tools", "hebrew_terms.tsv")
+INTENTS  = os.path.join(ROOT, "tools", "category_intents.tsv")
 UA = {"User-Agent": "matim-catalog-builder", "Accept": "application/vnd.github+json"}
 
 # Repos in the org that hold no skills (CLI, MCP servers, bundles, CI).
@@ -116,16 +117,16 @@ def classify(py_sources):
     return "Sx" if (AUTH.search(blob) or WRITE.search(blob)) else "Si"
 
 
-def hebrew_terms():
-    if not os.path.exists(HE_TERMS):
+def tsv(path):
+    if not os.path.exists(path):
         return {}
     out = {}
-    for line in open(HE_TERMS, encoding="utf-8"):
+    for line in open(path, encoding="utf-8"):
         line = line.rstrip("\n")
         if not line or line.startswith("#") or "\t" not in line:
             continue
-        slug, terms = line.split("\t", 1)
-        out[slug.strip()] = terms.strip()
+        k, v = line.split("\t", 1)
+        out[k.strip()] = v.strip()
     return out
 
 
@@ -147,7 +148,8 @@ def build():
     with ThreadPoolExecutor(max_workers=12) as ex:
         rows = list(ex.map(fetch, jobs))
 
-    he = hebrew_terms()
+    he = tsv(HE_TERMS)
+    intents = tsv(INTENTS)
     missing_he = [r["slug"] for r in rows if r["slug"] not in he]
     os.makedirs(OUT, exist_ok=True)
 
@@ -174,11 +176,14 @@ def build():
 
     # router
     L = ["# Category index", "",
-         "Pick 1-2 categories, then read only those files. Never read them all.", ""]
+         "Pick 1-2 categories by what the user is ASKING ABOUT, not by the category's name.",
+         "The names describe a technical domain; the lines below describe the questions.",
+         "Then read only those files. Never read them all.", ""]
     for repo in order:
         rs = by_repo[repo]
-        slugs = ", ".join(sorted(r["slug"] for r in rs)[:6])
-        L.append(f"- **{repo}** ({len(rs)}) — e.g. {slugs}…")
+        # Route on what people ask, not on the category's name. See plans/02.
+        hint = intents.get(repo) or ", ".join(sorted(r["slug"] for r in rs)[:6])
+        L.append(f"- **{repo}** ({len(rs)}) — {hint}")
     L += ["", "Flags: `-` instructions only · `Sc` port the logic and compute · "
           "`Si` extract the contract, make the real call · `Sx` needs auth or writes, out of reach here.",
           f"Generated from github.com/{ORG} — {len(rows)} skills."]
