@@ -26,9 +26,9 @@ Worked examples — note that two of three are silence:
 
 | Question | Act? | Why |
 |---|---|---|
-| *"כמה פנסיה מגיע לי אם אני עוזב עכשיו?"* | **yes** | Israeli pension rules; general knowledge gets Form 161 and rצף זכויות wrong |
+| *"כמה פנסיה מגיע לי אם אני עוזב עכשיו?"* | **yes** | Israeli pension rules; general knowledge gets Form 161 and רצף זכויות wrong |
 | *"תסכם לי את המייל הזה"* בעברית | **no** | Hebrew text, but the task is summarizing. Condition 1 fails |
-| *"תכתוב פונקציה שמחשבת מע\"מ 18%"* | **no** | The user supplied the rule; a skill would decorate, not change. Condition 3 fails |
+| *"תכתוב פונקציה שמחשבת מע"מ 18%"* | **no** | The user supplied the rule; a skill would decorate, not change. Condition 3 fails |
 
 A shared keyword is not a match. *"מס"* appearing in a question about a database column named
 `tax` is not a tax question.
