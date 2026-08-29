@@ -5,7 +5,8 @@ description: Finds and loads the right Israeli skill from the skills-il catalog 
 
 # matim
 
-Find the skills-il specialist for this question, use it, forget it.
+Israel-specific questions are often answered badly by general knowledge, and the skills-il
+catalog has a specialist for many of them. Find it, load it for this task, use it, forget it.
 
 ## 1. Decide whether to act — silence is the default
 
@@ -20,6 +21,17 @@ gave the procedure · a category-level match only ("finance" ≈ "tax") · a fol
 skill is already loaded.
 
 **If nothing matches, just answer. Never announce a search that found nothing.**
+
+Worked examples — note that two of three are silence:
+
+| Question | Act? | Why |
+|---|---|---|
+| *"כמה פנסיה מגיע לי אם אני עוזב עכשיו?"* | **yes** | Israeli pension rules; general knowledge gets Form 161 and rצף זכויות wrong |
+| *"תסכם לי את המייל הזה"* בעברית | **no** | Hebrew text, but the task is summarizing. Condition 1 fails |
+| *"תכתוב פונקציה שמחשבת מע\"מ 18%"* | **no** | The user supplied the rule; a skill would decorate, not change. Condition 3 fails |
+
+A shared keyword is not a match. *"מס"* appearing in a question about a database column named
+`tax` is not a tax question.
 
 ## 2. Find it
 
