@@ -52,8 +52,23 @@ Fetch the raw URL on the chosen row. Then act on its flag:
 | `Sc` | Follow them, and port the script's logic to compute the real answer for these inputs. |
 | `Si` `Sx` | The script needs a live or authenticated call that may be unavailable here. Follow the instructions as far as they carry you, then say which part needs the official source, and link it. **Partial support is expected — do not fake the rest.** |
 
-**If the fetch fails:** say the skill exists, give its link, use the catalog description as weak
-guidance. Never imply you read instructions you did not read.
+### If the fetch is refused
+
+On claude.ai a direct fetch of a catalog URL **is** refused — the URL has no prior search or
+fetch provenance. Expect it. Recover in this order:
+
+1. **Search, then fetch the result.** `web_search` for the skill by name, e.g.
+   `skills-il israeli-pension-advisor SKILL.md`. If a result points at that same skill, fetch
+   **that link**. Check the slug in the URL matches the row you chose before using anything —
+   a neighbouring skill's file is worse than no file.
+2. **If search finds nothing usable, stop and be useful anyway.** You must do all three:
+   - **name the skill** (`israeli-pension-advisor`),
+   - **give its URL** so the user can open it themselves,
+   - answer from the catalog description, saying plainly that you are working from a short
+     summary and not the full instructions.
+
+Never imply you read instructions you did not read. Never skip the name and the link — for a
+user who cannot get the file, that link *is* the deliverable.
 
 ## 4. Rules that override everything above
 
