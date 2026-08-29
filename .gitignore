@@ -24,3 +24,6 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Catalog build cache (refetchable: python3 tools/build_catalog.py --refresh)
+.cache/

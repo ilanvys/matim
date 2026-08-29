@@ -1,0 +1,29 @@
+# education
+
+6 skills. Fetch a skill's real instructions from its URL before applying it.
+Descriptions are the authors' own, unedited -- including the "Do NOT use for" clauses,
+which are load-bearing: they are how you tell near-misses apart.
+
+## israeli-academic-scholarships  `Sc`
+Not a determination of eligibility and not a submitted application. Match an Israeli higher-education student to scholarships they qualify for, ranked by deadline and grant size. Covers PEREACH, MoD periphery, Mimadim LiLimudim (graduated, NOT flat 100%), Pikadon, Student Authority for olim, MilGo (4-tier), Rashi, ISEF, university merit, Adams Fellowship for PhDs in exact/math/life sciences only, Rothschild postdoc, PBC/MALAG, the Iron Swords (חרבות ברזל) reservist framework via CHE + MoD, statutory tracks for bereaved families / wounded soldiers, and evacuee (מפונים) scholarships. Use when a student asks מלגה, פר\"ח, מלגת פריפריה, פיקדון, מלגת אדמס, מלגת רוטשילד, מלגת מילואים, חרבות ברזל, or how to fund tuition. Prevents missed deadlines, over-budgeting Mimadim, and humanities PhDs wasting an Adams application. Do NOT use for K-12, Bituach Leumi welfare (israeli-bituach-leumi), loans, MFA inbound-student scholarships, yeshiva stipends, or general post-army benefits (israeli-miluim-manager).
+`https://raw.githubusercontent.com/skills-il/education/master/israeli-academic-scholarships/SKILL.md`
+
+## israeli-bagrut-psychometric  `Sc`
+Guide users through Israel's Bagrut matriculation exams and Psychometric entrance test (PET) system. Use when user asks about bagrut study units, psychometric scores, exam structure, university entrance requirements, sekher calculation, or study planning. Covers the Bagrut grading formula (70% exam + 30% magen), PET scoring (200-800), NITE registration, test dates, and strategies for maximizing combined admission scores (sekhem). Prevents confusion between the many overlapping terms and formulas in the Israeli higher-education admissions process. Do NOT use for university-specific admission thresholds, post-secondary academic advising, or non-Israeli education systems.
+`https://raw.githubusercontent.com/skills-il/education/master/israeli-bagrut-psychometric/SKILL.md`
+
+## israeli-childcare-navigator  `-`
+Navigate the Israeli childcare system from birth to age 12: daycare subsidies (ma'on yom), preschool registration (gan chova/trom-chova), Bituach Leumi child allowances, tza'haronim (after-school programs), and special education rights. Use when user asks about daycare, gan registration, child allowance, tza'haronim, special education committee (va'adat hashama), chinuch meyuchad, or any child-related benefit in Israel. Covers the full parent journey from infancy through elementary school. Do NOT use for Bituach Leumi contribution calculations or general NI benefits (use israeli-bituach-leumi), maternity leave (dmei leida), or Bagrut exams (use israeli-bagrut-psychometric).
+`https://raw.githubusercontent.com/skills-il/education/master/israeli-childcare-navigator/SKILL.md`
+
+## israeli-genealogy-researcher  `-`
+Not legal advice, and not a ruling on record access. Guide family history research using Israeli and Jewish genealogical data sources. Use when a user asks about tracing Israeli or Jewish roots, finding family records, researching ancestors who lived in Ottoman Palestine, British Mandate Palestine, or modern Israel, decoding Hebrew-language historical documents, or building a family tree from Israeli records. Produces structured research plans, explains how to navigate IGRA, JewishGen, NLI archives, and municipal record systems, and helps decode Hebrew handwriting in historical certificates. Prevents dead-end research by matching the right data source to each genealogical question. Do NOT use for Yad Vashem Holocaust victim name searches specifically (use dedicated Holocaust research tools), DNA ancestry interpretation, or non-Israeli genealogy research.
+`https://raw.githubusercontent.com/skills-il/education/master/israeli-genealogy-researcher/SKILL.md`
+
+## israeli-heritage-explorer  `Si`
+Research Israeli and Jewish cultural heritage using the National Library of Israel's digital archives. Use when a user asks about Israeli history, Jewish heritage, historical photographs, ancient manuscripts, British Mandate documents, immigration waves, or wants primary source citations from NLI. Produces annotated research reports with direct links to NLI assets including manuscripts, photographs, maps, government records, and oral histories. Prevents hours of manual archive browsing and missed primary sources by leveraging the NLI OpenLibrary API with structured field queries. Do NOT use for modern news, current events, academic journal articles behind paywalls, or Yad Vashem Holocaust victim searches (use dedicated Holocaust research tools).
+`https://raw.githubusercontent.com/skills-il/education/master/israeli-heritage-explorer/SKILL.md`
+
+## israeli-tech-interview-prep  `Si`
+Prepare for technical interviews at Israeli tech companies with company-specific processes, question patterns, and Hebrew technical vocabulary. Use when getting ready for interviews at Israeli startups, enterprises, or multinational R&D centers, practicing system design questions relevant to Israeli tech products, or learning Hebrew terms used in technical discussions. Covers interview rounds, coding challenges, behavioral questions, and company culture expectations. Do NOT use for non-technical roles, academic interviews, or interviews at companies outside Israel.
+`https://raw.githubusercontent.com/skills-il/education/master/israeli-tech-interview-prep/SKILL.md`
