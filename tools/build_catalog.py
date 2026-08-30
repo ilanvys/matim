@@ -143,7 +143,8 @@ def build():
                                 lambda p=p: json.dumps(get(f"{RAW}/{ORG}/{repo}/{branch}/{p}", raw=True))))
               for p in s["py"][:3]]
         return {"repo": repo, "slug": s["slug"], "url": url, "fm": parse_frontmatter(body),
-                "flag": classify(py), "n_py": len(s["py"])}
+                "flag": classify(py), "n_py": len(s["py"]),
+                "site": f"https://agentskills.co.il/he/skills/{s['slug']}"}
 
     with ThreadPoolExecutor(max_workers=12) as ex:
         rows = list(ex.map(fetch, jobs))
@@ -170,6 +171,9 @@ def build():
             if r["slug"] in he:
                 L.append(f"**he:** {he[r['slug']]}")
             L.append(f"{r['fm'].get('description','(no description)')}")
+            # Site page first: it is fetchable and search-findable. The raw URL is not
+            # reachable on claude.ai, but it is the canonical source and works for humans.
+            L.append(f"{r['site']}")
             L.append(f"`{r['url']}`")
             L.append("")
         open(os.path.join(OUT, f"{repo}.md"), "w", encoding="utf-8").write("\n".join(L))

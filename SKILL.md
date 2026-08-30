@@ -35,9 +35,13 @@ A shared keyword is not a match. *"מס"* appearing in a question about a databa
 
 ## 2. Find it
 
-1. Read `catalog/_index.md`. Choose **1–2** categories by what the user is *asking about* —
-   the names describe technical domains, not who asks.
-2. Read only those shards, never all of them.
+> **The catalog is bundled with this skill. It is on disk, next to this file. It is NOT online.**
+> Read it with your file-reading tool. **Never fetch a `catalog/…` path over the web** — there is
+> no such URL, and any URL you construct for one is invented.
+
+1. Read the local file `catalog/_index.md`. Choose **1–2** categories by what the user is
+   *asking about* — the names describe technical domains, not who asks.
+2. Read only those local shard files (`catalog/<category>.md`), never all of them.
 3. Rank on each row's `Use when …` and `Do NOT use for …` clauses. The `Do NOT use` lines are
    how near-misses get ruled out — read them before choosing.
 4. Pick 0–2 skills. **Zero is a normal, frequent answer.**
@@ -57,10 +61,18 @@ Fetch the raw URL on the chosen row. Then act on its flag:
 On claude.ai a direct fetch of a catalog URL **is** refused — the URL has no prior search or
 fetch provenance. Expect it. Recover in this order:
 
-1. **Search, then fetch the result.** `web_search` for the skill by name, e.g.
-   `skills-il israeli-pension-advisor SKILL.md`. If a result points at that same skill, fetch
-   **that link**. Check the slug in the URL matches the row you chose before using anything —
-   a neighbouring skill's file is worse than no file.
+1. **Search, then fetch the result — and aim at the right site.** `web_search` for the skill by
+   name plus `agentskills.co.il`, e.g. `israeli-pension-advisor agentskills.co.il`.
+
+   Aim for **`agentskills.co.il/he/skills/<slug>`**. That page is fetchable and carries the
+   skill's full Hebrew summary. Fetch it from the search result and check the slug matches.
+
+   **Do not bother with github.com** — its pages are robots-disallowed for fetching, and
+   `raw.githubusercontent.com` refuses URLs that were not themselves search results. Both are
+   dead ends here; going back to them wastes turns.
+
+   The site page gives you a **summary in Hebrew, not the full instructions.** Treat it as
+   rung 2: better than nothing, not the procedure. Disclose accordingly.
 2. **If search finds nothing usable, stop and be useful anyway.** You must do all three:
    - **name the skill** (`israeli-pension-advisor`),
    - **give its URL** so the user can open it themselves,
