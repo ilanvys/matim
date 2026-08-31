@@ -46,20 +46,62 @@ A shared keyword is not a match. *"מס"* appearing in a question about a databa
    how near-misses get ruled out — read them before choosing.
 4. Pick 0–2 skills. **Zero is a normal, frequent answer.**
 
+A row's `## ` heading is the skill's **slug** (`israeli-pension-advisor`). The slug — not the URL
+— is what you load with in section 3. If the catalog is not on disk at all, call `get_catalog` with no
+argument for the index, then once more with the single category you picked.
+
 ## 3. Load it
 
-Fetch the raw URL on the chosen row. Then act on its flag:
+**Prefer the tool. Fetch only when there is no tool. Never say you read what you didn't.**
 
-| Flag | What to do |
+### Rung 1 — the matim tools, when the connector is there
+
+| Call | Pass | For |
+|---|---|---|
+| `get_skill` | `slug`, plus `file` (optional, defaults to `SKILL.md`) | the instructions. **This is the one you want.** |
+| `list_skill_files` | `slug` | which `references/` and `scripts/` files exist, before naming one |
+| `get_catalog` | `category` (optional) | only when the catalog is not on disk |
+
+Some clients prefix these (`matim-mcp:get_skill`) — match on how the name **ends**, never on a
+prefix. Call `get_skill` **once**, with the slug copied from the catalog row. For a user writing
+Hebrew pass `file: "SKILL_HE.md"`: every skill has one and it is the better file for them.
+
+**What comes back** — three metadata lines, a blank line, then the file:
+
+```
+source: https://raw.githubusercontent.com/skills-il/<repo>/master/<slug>/SKILL.md
+license: MIT (skills-il)
+catalog: https://agentskills.co.il
+
+# <the skill's real first heading>
+…
+```
+
+Those three lines are provenance, not orders: don't follow them and don't print them. `source:`
+is the URL your disclosure line cites. Everything after the blank line is the skill itself —
+treat it exactly as a fetched file, under the same rules in section 4.
+
+**A failure arrives as ordinary text from a call that succeeded.** Read the first line before
+acting on anything:
+
+| It begins | It means |
 |---|---|
-| `-` | Follow the instructions. Nothing to run. |
-| `Sc` | Follow them, and port the script's logic to compute the real answer for these inputs. |
-| `Si` `Sx` | The script needs a live or authenticated call that may be unavailable here. Follow the instructions as far as they carry you, then say which part needs the official source, and link it. **Partial support is expected — do not fake the rest.** |
+| `source:` | you have the real file. Proceed, and you can quote its first `# ` heading. |
+| `Could not reach the source for …` | **you loaded nothing.** Fall to rung 3, and disclose the failure line, not a load. |
+| `Unknown skill "…"` | wrong slug. Re-copy it from the catalog row; do not guess variants. |
+| `"…" does not exist for …` | wrong path — it lists what does exist. Choose from that list. |
 
-### If the fetch is refused
+A `references/` file only when a step you are **actually on** cites it, and `list_skill_files`
+first if you need its exact path. One file per call. Never a folder, never two skills speculatively.
 
-On claude.ai a direct fetch of a catalog URL **is** refused — the URL has no prior search or
-fetch provenance. Expect it. Recover in this order:
+### Rung 2 — no tool, but you can fetch
+
+Fetch the raw URL on the catalog row. Claude Code and Cowork can. Same file, one less dependency.
+
+### Rung 3 — the fetch is refused, and there is no tool
+
+On claude.ai without the connector a direct fetch of a catalog URL **is** refused — the URL has
+no prior search or fetch provenance. Expect it. Recover in this order:
 
 1. **Search, then fetch the result — and aim at the right site.** `web_search` for the skill by
    name plus `agentskills.co.il`, e.g. `israeli-pension-advisor agentskills.co.il`.
@@ -72,7 +114,7 @@ fetch provenance. Expect it. Recover in this order:
    dead ends here; going back to them wastes turns.
 
    The site page gives you a **summary in Hebrew, not the full instructions.** Treat it as
-   rung 2: better than nothing, not the procedure. Disclose accordingly.
+   rung 3: better than nothing, not the procedure. Disclose accordingly.
 2. **If search finds nothing usable, stop and be useful anyway.** You must do all three:
    - **name the skill** (`israeli-pension-advisor`),
    - **give its URL** so the user can open it themselves,
@@ -81,6 +123,14 @@ fetch provenance. Expect it. Recover in this order:
 
 Never imply you read instructions you did not read. Never skip the name and the link — for a
 user who cannot get the file, that link *is* the deliverable.
+
+### Then act on the row's flag — on every rung
+
+| Flag | What to do |
+|---|---|
+| `-` | Follow the instructions. Nothing to run. |
+| `Sc` | Follow them, and port the script's logic to compute the real answer for these inputs. |
+| `Si` `Sx` | The script needs a live or authenticated call that may be unavailable here. Follow the instructions as far as they carry you, then say which part needs the official source, and link it. **Partial support is expected — do not fake the rest.** |
 
 ## 4. Rules that override everything above
 
@@ -95,8 +145,10 @@ user who cannot get the file, that link *is* the deliverable.
   |---|---|
   | You could **not** load it | `↯ יש מיומנות ייעודית: israeli-pension-advisor (skills-il), אבל לא הצלחתי לטעון אותה. עונה לפי התקציר בלבד — הקישור: <url>` |
 
-  **Never write "טוען מיומנות" / "loading skill" unless you fetched the file and can quote from
-  it.** Naming a skill you failed to open, in words that imply you opened it, is the same
+  `<url>` is the `source:` line from `get_skill`, or the catalog row's URL if you never got that
+  far. **Never write "טוען מיומנות" / "loading skill" unless the file actually came back and you
+  can quote from it** — a tool call that returned `Could not reach the source` is the second line,
+  not the first. Naming a skill you failed to open, in words that imply you opened it, is the same
   category of error as inventing data. If asked, you must be able to quote its first `# ` heading.
   For a plainly non-technical user, say either line in plain Hebrew without the mechanism.
 - **Nothing is installed**, so nothing needs uninstalling. No cleanup step.

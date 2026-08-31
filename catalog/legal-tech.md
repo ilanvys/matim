@@ -1,6 +1,6 @@
 # legal-tech
 
-18 skills. Fetch a skill's real instructions from its URL before applying it.
+19 skills. Fetch a skill's real instructions from its URL before applying it.
 Descriptions are the authors' own, unedited -- including the "Do NOT use for" clauses,
 which are load-bearing: they are how you tell near-misses apart.
 
@@ -83,6 +83,11 @@ https://agentskills.co.il/he/skills/israeli-tabu-extract-decoder
 Builds a complete Hebrew proposal package for Israeli government and public sector tenders (michrazim). Parses the tender document, extracts threshold conditions, produces a compliance checklist, and drafts every proposal section per Chok Chovat HaMichrazim 5752-1992 and Takanot 5753-1993 (declarations, past experience table, pricing worksheet). Use when responding to an open tender (michraz pumbi), closed (sagur), framework (misgeret), or a local authority tender, and when researching historical procurement contracts via BudgetKey or IL Budget MCP to benchmark pricing. Prevents disqualification on technical defects. Do NOT use for Israeli Land Authority (RMI) land allocation tenders (use israeli-land-tenders), for filing a petition to the tenders committee, or for private commercial RFPs not subject to the Mandatory Tenders Law.
 https://agentskills.co.il/he/skills/israeli-tender-proposal-builder
 `https://raw.githubusercontent.com/skills-il/legal-tech/master/israeli-tender-proposal-builder/SKILL.md`
+
+## israeli-urban-renewal-owner-guide  `Sc`
+>-
+https://agentskills.co.il/he/skills/israeli-urban-renewal-owner-guide
+`https://raw.githubusercontent.com/skills-il/legal-tech/master/israeli-urban-renewal-owner-guide/SKILL.md`
 
 ## israeli-wills-inheritance  `Sc`
 >-

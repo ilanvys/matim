@@ -1,6 +1,6 @@
 # courses
 
-7 skills. Fetch a skill's real instructions from its URL before applying it.
+6 skills. Fetch a skill's real instructions from its URL before applying it.
 Descriptions are the authors' own, unedited -- including the "Do NOT use for" clauses,
 which are load-bearing: they are how you tell near-misses apart.
 
@@ -28,11 +28,6 @@ https://agentskills.co.il/he/skills/making-aliyah-first-90-days
 A 6-chapter course on Israeli reserve-duty (miluim) compensation, focused on the self-employed. How tagmul is calculated, the Tax Authority business grant, long-service grants, job protection, and how to claim.
 https://agentskills.co.il/he/skills/miluim-rights-and-money
 `https://raw.githubusercontent.com/skills-il/courses/master/miluim-rights-and-money/SKILL.md`
-
-## sample-course  `-`
-Test course
-https://agentskills.co.il/he/skills/sample-course
-`https://raw.githubusercontent.com/skills-il/courses/master/__fixtures/sample-course/SKILL.md`
 
 ## writing-your-first-agent-skill  `-`
 A 6-chapter course for developers on how to write an agent skill from scratch. Covers the SKILL.md format, frontmatter anatomy, references/ vs scripts/, sharing your skill, and the 10 most common authoring mistakes. The format is the one Claude Code, Cursor, Windsurf, and Claude Desktop all accept. Works for personal skills, team skills, or contributions to public catalogs.

@@ -23,6 +23,11 @@ OUT = os.path.join(ROOT, "catalog")
 HE_TERMS = os.path.join(ROOT, "tools", "hebrew_terms.tsv")
 INTENTS  = os.path.join(ROOT, "tools", "category_intents.tsv")
 UA = {"User-Agent": "matim-catalog-builder", "Accept": "application/vnd.github+json"}
+# Optional and read-only. api.github.com allows 60 requests/hour per IP unauthenticated,
+# which a --refresh run can exhaust; a token raises that to 5000. Raw file reads below
+# don't count against it -- raw.githubusercontent is a CDN with no such limit.
+if os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN"):
+    UA["Authorization"] = "Bearer " + (os.environ.get("GITHUB_TOKEN") or os.environ["GH_TOKEN"])
 
 # Repos in the org that hold no skills (CLI, MCP servers, bundles, CI).
 NOT_SKILL_REPOS = {"skills-il-cli", "release-workflow", ".github", "mcps",
@@ -72,6 +77,11 @@ def discover():
         blobs = [e["path"] for e in tree.get("tree", []) if e["type"] == "blob"]
         skills = []
         for p in blobs:
+            # A skill lives at <slug>/SKILL.md. Anything nested under a private directory
+            # (__fixtures/, .github/) is test scaffolding: it would produce a routable row
+            # that matim-mcp cannot resolve, because the manifest keys on the first segment.
+            if any(seg.startswith(("__", ".")) for seg in p.split("/")[:-1]):
+                continue
             if p.endswith("SKILL.md"):
                 d = p[: -len("SKILL.md")]
                 skills.append({"slug": d.rstrip("/").split("/")[-1], "path": p,
