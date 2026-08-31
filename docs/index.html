@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matim · מתאים</title>
+<meta name="description" content="שואלים בעברית, מקבלים תשובה שמתאימה לישראל. מתאים מוצא את ההנחיות הישראליות המדויקות לשאלה שלכם, משתמש בהן פעם אחת, ושוכח אותן.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Assistant:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#FBFAF7; --surface:#FFFFFE; --raised:#F4F2EC;
+  --ink:#171B1A; --muted:#6B7471; --faint:#9AA29F;
+  --rule:#E4E1D8; --rule-soft:#EFEDE6;
+  --accent:#0B5F6B; --accent-ink:#094B55; --accent-soft:#E3EFF0;
+  --warm:#9C4A21; --warm-soft:#F7EAE2;
+  --serif:"Frank Ruhl Libre",Georgia,"Times New Roman",serif;
+  --sans:"Assistant","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1312; --surface:#171C1B; --raised:#1D2322;
+    --ink:#EBE9E2; --muted:#9AA39F; --faint:#6E7773;
+    --rule:#2A302E; --rule-soft:#202524;
+    --accent:#5CBAB3; --accent-ink:#7FCFC8; --accent-soft:#14302F;
+    --warm:#D28455; --warm-soft:#301F16;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1312; --surface:#171C1B; --raised:#1D2322;
+  --ink:#EBE9E2; --muted:#9AA39F; --faint:#6E7773;
+  --rule:#2A302E; --rule-soft:#202524;
+  --accent:#5CBAB3; --accent-ink:#7FCFC8; --accent-soft:#14302F;
+  --warm:#D28455; --warm-soft:#301F16;
+}
+*{box-sizing:border-box}
+html{direction:ltr}
+html[data-lang="he"]{direction:rtl}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:17.5px; line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+html[data-lang="he"] body{font-size:18.5px; line-height:1.8}
+
+/* language switching */
+html[data-lang="he"] [lang="en"]{display:none}
+html[data-lang="en"] [lang="he"]{display:none}
+
+.wrap{max-width:760px; margin:0 auto; padding:0 26px}
+.wide{max-width:940px}
+
+/* ---------- top bar ---------- */
+.bar{
+  display:flex; align-items:center; justify-content:space-between; gap:18px;
+  padding:20px 0; border-bottom:1px solid var(--rule-soft);
+}
+.mark{display:flex; align-items:baseline; gap:.4em; font-family:var(--serif)}
+.mark .lat{font-weight:700; font-size:1.28rem; letter-spacing:-.01em}
+.mark .dot{color:var(--rule); font-size:1rem}
+.mark .heb{font-weight:500; font-size:1.2rem; color:var(--accent)}
+.seg{display:flex; border:1px solid var(--rule); border-radius:999px; overflow:hidden; background:var(--surface)}
+.seg button{
+  font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.02em;
+  padding:6px 15px; border:0; background:transparent; color:var(--muted); cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.seg button[aria-pressed="true"]{background:var(--accent); color:var(--paper)}
+.seg button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-family:var(--serif); font-weight:700; text-wrap:balance; margin:0; letter-spacing:-.01em}
+h2{font-size:clamp(1.65rem,4.2vw,2.25rem); line-height:1.28}
+h3{font-size:1.15rem; line-height:1.4; font-weight:700}
+p{margin:0 0 1.1em}
+p:last-child{margin-bottom:0}
+a{color:var(--accent-ink); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--accent) 32%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+.eyebrow{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 14px;
+}
+.lede{font-size:1.16em; color:var(--muted)}
+.ltr{direction:ltr; unicode-bidi:isolate; display:inline-block}
+
+section{padding:60px 0; border-top:1px solid var(--rule-soft)}
+section:first-of-type{border-top:none}
+
+/* ---------- hero ---------- */
+.hero{padding:76px 0 66px; border:none}
+.hero h1{
+  font-size:clamp(2.1rem,6.4vw,3.4rem); line-height:1.18; font-weight:900;
+  margin-bottom:.4em; max-width:15em;
+}
+.hero .sub{font-size:clamp(1.08rem,2.5vw,1.28rem); color:var(--muted); max-width:34em; margin-bottom:34px}
+.cta{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+.btn{
+  display:inline-block; font-family:var(--sans); font-weight:600; font-size:15.5px;
+  padding:12px 24px; border-radius:999px; border:1px solid var(--accent);
+  background:var(--accent); color:var(--paper); border-bottom-color:var(--accent);
+}
+.btn:hover{background:var(--accent-ink); border-color:var(--accent-ink)}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--rule)}
+.btn.ghost:hover{border-color:var(--accent); color:var(--accent-ink); background:transparent}
+
+/* ---------- flip: the two paths ---------- */
+.flip{display:grid; gap:12px; margin-top:44px; max-width:520px}
+.flip div{
+  padding:14px 18px; border:1px solid var(--rule); border-radius:6px; background:var(--surface);
+  font-size:15.5px;
+}
+.flip .cap{
+  display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--faint); margin-bottom:5px;
+}
+.flip .old{color:var(--muted)}
+.flip .old .line{text-decoration:line-through; text-decoration-color:var(--warm)}
+.flip .new{border-color:var(--accent); background:var(--accent-soft)}
+.flip .new .line{font-weight:700; color:var(--ink)}
+.arr{color:var(--accent); padding:0 .3em; text-decoration:none; display:inline-block}
+.flip .old .arr{color:var(--faint)}
+
+/* ---------- steps ---------- */
+ol.flow{list-style:none; counter-reset:s; padding:0; margin:30px 0 0; display:grid; gap:22px}
+ol.flow li{counter-increment:s; display:flex; gap:16px; align-items:flex-start}
+ol.flow li::before{
+  content:counter(s); flex:none; width:29px; height:29px; border-radius:50%;
+  background:var(--accent-soft); color:var(--accent-ink); font-family:var(--mono);
+  font-size:12.5px; font-weight:500; display:grid; place-items:center; margin-top:3px;
+}
+ol.flow b{font-weight:700}
+ol.flow p{margin:0; color:var(--muted); font-size:.96em}
+
+/* ---------- example cards ---------- */
+.cards{display:grid; gap:14px; margin-top:30px}
+@media(min-width:680px){.cards{grid-template-columns:1fr 1fr}}
+.card{border:1px solid var(--rule); border-radius:8px; background:var(--surface); padding:18px 20px}
+.card .q{font-family:var(--serif); font-size:1.12rem; font-weight:500; line-height:1.45; margin:0 0 12px}
+.card .out{display:flex; align-items:flex-start; gap:9px; font-size:14.5px; color:var(--muted); margin:0}
+.pill{
+  flex:none; font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+  padding:3px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink);
+  white-space:nowrap; margin-top:2px;
+}
+.card.quiet .pill{background:var(--raised); color:var(--muted)}
+.card.quiet{border-style:dashed}
+
+/* ---------- stats ---------- */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:8px; overflow:hidden}
+.stat{background:var(--surface); padding:22px 20px; text-align:center}
+.stat .n{font-family:var(--serif); font-size:2.4rem; font-weight:900; line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; display:block; color:var(--accent-ink)}
+.stat .k{font-size:13.5px; color:var(--muted); margin-top:9px; display:block; line-height:1.4}
+
+/* ---------- install tabs ---------- */
+.tabs{display:flex; flex-wrap:wrap; gap:7px; margin:26px 0 0}
+.tabs button{
+  font-family:var(--sans); font-size:14.5px; font-weight:600; padding:9px 17px;
+  border:1px solid var(--rule); background:var(--surface); color:var(--muted);
+  border-radius:999px; cursor:pointer; transition:all .15s;
+}
+.tabs button:hover{color:var(--ink); border-color:var(--faint)}
+.tabs button[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:var(--paper)}
+.tabs button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.panel{
+  border:1px solid var(--rule); border-radius:8px; background:var(--surface);
+  padding:24px 26px; margin-top:14px;
+}
+.panel[hidden]{display:none}
+.panel .who{font-size:14.5px; color:var(--muted); margin:0 0 18px; padding-bottom:16px; border-bottom:1px solid var(--rule-soft)}
+ol.install{margin:0; padding-inline-start:1.3em; display:grid; gap:11px}
+ol.install li{padding-inline-start:.3em}
+ol.install li::marker{color:var(--accent); font-weight:700; font-family:var(--mono); font-size:.9em}
+kbd{
+  font-family:var(--sans); font-size:.94em; font-weight:600; background:var(--raised);
+  border:1px solid var(--rule); border-radius:4px; padding:1px 7px; white-space:nowrap;
+}
+.cmd{
+  direction:ltr; text-align:left; font-family:var(--mono); font-size:13px; line-height:1.6;
+  background:var(--raised); border:1px solid var(--rule); border-radius:6px;
+  padding:13px 15px; margin:11px 0 0; overflow-x:auto; white-space:pre; color:var(--ink);
+}
+.url{
+  direction:ltr; text-align:left; font-family:var(--mono); font-size:13.5px;
+  background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
+  border-radius:6px; padding:11px 14px; margin:11px 0 0; overflow-x:auto; white-space:nowrap;
+  color:var(--accent-ink); font-weight:500;
+}
+
+/* ---------- status ---------- */
+.status{
+  display:flex; gap:12px; align-items:flex-start; border:1px solid var(--warm);
+  background:var(--warm-soft); border-radius:8px; padding:15px 18px; font-size:15px;
+}
+.status .dot{width:8px; height:8px; border-radius:50%; background:var(--warm); flex:none; margin-top:9px}
+.status b{color:var(--warm)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--rule); padding:34px 0 60px; font-size:14px; color:var(--muted)}
+footer p{margin-bottom:.7em}
+.devlink{margin-top:18px; font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+/* ---------- the two pieces ---------- */
+.pieces{display:grid; gap:14px; margin:28px 0 0}
+@media(min-width:680px){.pieces{grid-template-columns:1fr 1fr}}
+.piece{border:1px solid var(--rule); border-radius:8px; background:var(--surface); padding:18px 20px}
+.piece .ptag{
+  display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--faint); margin-bottom:7px;
+}
+.piece b{font-family:var(--serif); font-size:1.14rem; font-weight:700; display:block; margin-bottom:7px}
+.piece p{margin:0; font-size:14.5px; color:var(--muted); line-height:1.6}
+.whyboth{
+  margin:18px 0 0; padding-inline-start:16px; border-inline-start:3px solid var(--accent);
+  font-size:15.5px;
+}
+/* ---------- panel sub-heads ---------- */
+.ph{
+  display:flex; align-items:center; gap:10px; font-size:1.06rem; margin:0 0 13px;
+}
+.ph:not(:first-of-type){margin-top:26px; padding-top:22px; border-top:1px solid var(--rule-soft)}
+.pnum{
+  flex:none; width:24px; height:24px; border-radius:50%; background:var(--accent);
+  color:var(--paper); font-family:var(--mono); font-size:12px; font-weight:500;
+  display:grid; place-items:center;
+}
+.opt{
+  font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.03em;
+  padding:2px 9px; border-radius:999px; background:var(--raised); color:var(--muted);
+}
+.panel .note{
+  margin-top:18px; padding-top:15px; border-top:1px solid var(--rule-soft);
+  font-size:14px; color:var(--muted);
+}
+.panel h3.ph + ol.install{margin-bottom:0}
+</style>
+</head>
+<body>
+
+<div class="wrap wide">
+  <div class="bar">
+    <div class="mark"><span class="lat">matim</span><span class="dot">·</span><span class="heb">מתאים</span></div>
+    <div class="seg" role="group" aria-label="Language / שפה">
+      <button type="button" id="btn-he" aria-pressed="true">עברית</button>
+      <button type="button" id="btn-en" aria-pressed="false">English</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow"><span lang="he">מבוסס על הקטלוג הפתוח skills-il</span><span lang="en">Built on the open skills-il catalog</span></p>
+  <h1>
+    <span lang="he">שואלים בעברית. מקבלים תשובה שבאמת מתאימה לישראל.</span>
+    <span lang="en">Ask in Hebrew. Get an answer that actually fits Israel.</span>
+  </h1>
+  <p class="sub">
+    <span lang="he">מתאים מוצא את ההנחיות הישראליות המדויקות לשאלה שלכם, משתמש בהן פעם אחת, ושוכח אותן. בלי לחפש, בלי להתקין, בלי לדעת שום מונח טכני.</span>
+    <span lang="en">matim finds the Israeli guidance that fits your question, uses it once, and forgets it. No searching, no installing, no technical terms to learn.</span>
+  </p>
+  <div class="cta">
+    <a class="btn" href="#install"><span lang="he">איך מתחילים</span><span lang="en">Get started</span></a>
+    <a class="btn ghost" href="#how"><span lang="he">איך זה עובד</span><span lang="en">How it works</span></a>
+  </div>
+
+  <div class="flip">
+    <div class="old">
+      <span class="cap"><span lang="he">הדרך הרגילה</span><span lang="en">The usual way</span></span>
+      <span class="line"><span lang="he">לדעת שקיים מדריך<span class="arr">←</span>למצוא אותו<span class="arr">←</span>להתקין<span class="arr">←</span>לשאול</span><span lang="en">know a guide exists<span class="arr">→</span>find it<span class="arr">→</span>install it<span class="arr">→</span>ask</span></span>
+    </div>
+    <div class="new">
+      <span class="cap"><span lang="he">הדרך של מתאים</span><span lang="en">The matim way</span></span>
+      <span class="line"><span lang="he">לשאול<span class="arr">←</span>וזה כבר שם</span><span lang="en">ask<span class="arr">→</span>it's already there</span></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2><span lang="he">התשובה נשמעת בטוחה. היא פשוט לא ישראלית.</span><span lang="en">The answer sounds confident. It just isn't Israeli.</span></h2>
+  <p class="lede" style="margin-top:18px">
+    <span lang="he">שואלים על פנסיה, מס הכנסה, ביטוח לאומי או זכויות אחרי מילואים — ומקבלים תשובה שנכתבה לפי הכללים של מדינה אחרת. היא מנוסחת יפה, היא נשמעת סמכותית, והפרטים בה פשוט לא נכונים כאן.</span>
+    <span lang="en">You ask about pensions, income tax, National Insurance, or your rights after reserve duty — and you get an answer written for another country's rules. It reads well, it sounds authoritative, and the details are simply wrong here.</span>
+  </p>
+  <p>
+    <span lang="he">הכללים הישראליים כבר כתובים, בפומבי ובחינם: <a href="https://agentskills.co.il/he">skills-il</a> הוא קטלוג פתוח של 209 מדריכים מקצועיים על מס, פנסיה, טפסים, חוק וזכויות בישראל. הם טובים, והם כבר מכילים את התשובות לשאלות שאנשים שואלים כל יום.</span>
+    <span lang="en">The Israeli rules are already written down, publicly and free: <a href="https://agentskills.co.il/he">skills-il</a> is an open catalog of 209 professional guides on tax, pensions, forms, law, and rights in Israel. They're good, and they already hold the answers people ask about every day.</span>
+  </p>
+  <p>
+    <span lang="he"><strong>הבעיה היא איך מגיעים אליהם.</strong> היום צריך לדעת שהמדריך קיים, למצוא אותו, ולהתקין אותו — ורק אז לשאול. מי שהכי צריך את המדריך הזה הוא בדיוק מי שלא יודע שהוא קיים. אי אפשר לחפש משהו שלא ידוע לך שהוא שם.</span>
+    <span lang="en"><strong>The problem is reaching them.</strong> Today you have to know the guide exists, find it, and install it — and only then ask. The person who needs it most is exactly the one who doesn't know it's there. You can't go looking for something you don't know exists.</span>
+  </p>
+</section>
+
+<section id="how">
+  <p class="eyebrow"><span lang="he">איך זה עובד</span><span lang="en">How it works</span></p>
+  <h2><span lang="he">שואלים — והמדריך מגיע אליכם</span><span lang="en">You ask — and the guide comes to you</span></h2>
+  <ol class="flow">
+    <li><div><b><span lang="he">שואלים שאלה רגילה, בעברית.</span><span lang="en">Ask an ordinary question, in Hebrew.</span></b><p><span lang="he">בדיוק כמו שהייתם שואלים חבר. לא צריך לומר את המילה "מיומנות" ולא צריך לדעת שקיים קטלוג.</span><span lang="en">Just like you'd ask a friend. You never say the word "skill" and never need to know a catalog exists.</span></p></div></li>
+    <li><div><b><span lang="he">מתאים מזהה שיש מדריך ישראלי לשאלה הזו.</span><span lang="en">matim spots that an Israeli guide fits.</span></b><p><span lang="he">הוא סורק את הקטלוג, בוחר את המדריך שמתאים למשימה עצמה — לא למילה שבמקרה חוזרת.</span><span lang="en">It scans the catalog and picks the guide that matches the actual task — not a keyword that happens to repeat.</span></p></div></li>
+    <li><div><b><span lang="he">הוא טוען את ההנחיות האמיתיות, בזמן אמת.</span><span lang="en">It loads the real guidance, live.</span></b><p><span lang="he">ישירות מהמקור הפומבי, כדי שזה אף פעם לא יהיה גרסה ישנה. אתם מקבלים שורה אחת שאומרת איזה מדריך נטען, עם קישור אליו.</span><span lang="en">Straight from the public source, so it's never a stale copy. You get one line telling you which guide was loaded, with a link to it.</span></p></div></li>
+    <li><div><b><span lang="he">השיחה נגמרת, והכול נשכח.</span><span lang="en">The conversation ends, and it's all forgotten.</span></b><p><span lang="he">שום דבר לא הותקן, אז שום דבר לא צריך להימחק. בפעם הבאה זה יקרה שוב מעצמו.</span><span lang="en">Nothing was installed, so nothing needs uninstalling. Next time it just happens again.</span></p></div></li>
+  </ol>
+</section>
+
+<section>
+  <p class="eyebrow"><span lang="he">דוגמאות</span><span lang="en">Examples</span></p>
+  <h2><span lang="he">מתי זה נכנס לפעולה — ומתי לא</span><span lang="en">When it steps in — and when it doesn't</span></h2>
+  <div class="cards">
+    <div class="card">
+      <p class="q"><span lang="he">״כמה פנסיה מגיע לי אם אני עוזב עכשיו?״</span><span lang="en">"How much pension am I owed if I leave now?"</span></p>
+      <p class="out"><span class="pill"><span lang="he">נכנס</span><span lang="en">steps in</span></span><span lang="he">כללי הפנסיה בישראל. ידע כללי מפספס את טופס 161 ואת רצף הזכויות.</span><span lang="en">Israeli pension rules. General knowledge gets Form 161 and continuity of rights wrong.</span></p>
+    </div>
+    <div class="card">
+      <p class="q"><span lang="he">״אני עוסק פטור — מתי אני חייב לעבור למורשה?״</span><span lang="en">"I'm an exempt dealer — when must I switch to licensed?"</span></p>
+      <p class="out"><span class="pill"><span lang="he">נכנס</span><span lang="en">steps in</span></span><span lang="he">סף מחזור שמתעדכן כל שנה, וכללי מע״מ שאין להם מקבילה בחו״ל.</span><span lang="en">A turnover threshold that changes yearly, and VAT rules with no equivalent abroad.</span></p>
+    </div>
+    <div class="card quiet">
+      <p class="q"><span lang="he">״תסכם לי את המייל הזה״</span><span lang="en">"Summarize this email for me"</span></p>
+      <p class="out"><span class="pill"><span lang="he">שותק</span><span lang="en">stays quiet</span></span><span lang="he">המייל בעברית, אבל המשימה היא סיכום. אין כאן שום דבר ישראלי לפתור.</span><span lang="en">The email is in Hebrew, but the task is summarizing. Nothing Israeli to solve.</span></p>
+    </div>
+    <div class="card quiet">
+      <p class="q"><span lang="he">״תכתוב פונקציה שמחשבת מע״מ 18%״</span><span lang="en">"Write a function that computes 18% VAT"</span></p>
+      <p class="out"><span class="pill"><span lang="he">שותק</span><span lang="en">stays quiet</span></span><span lang="he">אתם כבר נתתם את הכלל. מדריך פה היה מקשט, לא משנה את התשובה.</span><span lang="en">You already gave the rule. A guide here would decorate, not change the answer.</span></p>
+    </div>
+  </div>
+  <p style="margin-top:26px">
+    <span lang="he"><strong>רוב הזמן מתאים לא עושה כלום — וזה בכוונה.</strong> שאלה שלא צריכה מדריך מקבלת תשובה רגילה, בלי הכרזות ובלי רעש. הוא לא מודיע לכם שהוא חיפש ולא מצא. הוא פשוט עונה.</span>
+    <span lang="en"><strong>Most of the time matim does nothing — by design.</strong> A question that doesn't need a guide gets a normal answer, with no announcements and no noise. It doesn't tell you it searched and found nothing. It just answers.</span>
+  </p>
+</section>
+
+<section>
+  <div class="stats">
+    <div class="stat"><span class="n">209</span><span class="k"><span lang="he">מדריכים בקטלוג</span><span lang="en">guides in the catalog</span></span></div>
+    <div class="stat"><span class="n">14</span><span class="k"><span lang="he">תחומים</span><span lang="en">areas</span></span></div>
+    <div class="stat"><span class="n">127</span><span class="k"><span lang="he">מהחיים עצמם — מסים, זכויות, בריאות</span><span lang="en">from everyday life — tax, rights, health</span></span></div>
+    <div class="stat"><span class="n">0</span><span class="k"><span lang="he">דברים להתקין מחדש</span><span lang="en">things to reinstall</span></span></div>
+  </div>
+</section>
+
+<section id="install">
+  <p class="eyebrow"><span lang="he">התקנה</span><span lang="en">Install</span></p>
+  <h2><span lang="he">שני חלקים, פעם אחת, ואז שוכחים מזה</span><span lang="en">Two pieces, once, then forget about it</span></h2>
+  <p style="margin-top:16px">
+    <span lang="he">מתאים מורכב משני דברים שעושים עבודה שונה. בכל המקומות חוץ מ‑ChatGPT מתקינים את שניהם, וזה לוקח כמה דקות.</span>
+    <span lang="en">matim is two things doing different jobs. Everywhere except ChatGPT you install both, and it takes a few minutes.</span>
+  </p>
+
+  <div class="pieces">
+    <div class="piece">
+      <span class="ptag"><span lang="he">חלק א׳</span><span lang="en">Piece 1</span></span>
+      <b><span lang="he">המדריך — הראש</span><span lang="en">The guide — the head</span></b>
+      <p><span lang="he">הוא זה שמחליט: האם השאלה שלכם בכלל צריכה מדריך ישראלי, ואיזה מהם. רשימת כל 209 המדריכים מגיעה איתו, אז ההחלטה נעשית מקומית ומיד.</span><span lang="en">It decides whether your question needs an Israeli guide at all, and which one. All 209 entries ship with it, so the decision is local and immediate.</span></p>
+    </div>
+    <div class="piece">
+      <span class="ptag"><span lang="he">חלק ב׳</span><span lang="en">Piece 2</span></span>
+      <b><span lang="he">החיבור — היד</span><span lang="en">The connector — the hand</span></b>
+      <p><span lang="he">הוא זה שמביא את ההנחיות המלאות עצמן, בזמן אמת מהמקור הפומבי, בעברית כשצריך. כך זה אף פעם לא גרסה ישנה.</span><span lang="en">It brings the full guidance itself, live from the public source, in Hebrew when that's the better file. So it's never a stale copy.</span></p>
+    </div>
+  </div>
+  <p class="whyboth">
+    <span lang="he"><strong>אחד בלי השני עובד חצי.</strong> בלי המדריך אף אחד לא יחליט להשתמש בקטלוג, גם אם החיבור מותקן. בלי החיבור המדריך יידע מה הוא רוצה, אבל יצטרך להסתפק בסיכום מהאתר במקום בהנחיות המלאות.</span>
+    <span lang="en"><strong>Either one alone works at half strength.</strong> Without the guide, nothing decides to use the catalog — even with the connector installed. Without the connector, the guide knows what it wants but has to settle for a summary from the website instead of the full instructions.</span>
+  </p>
+
+  <div class="tabs" role="tablist" aria-label="Install target">
+    <button type="button" role="tab" id="t-web"  aria-controls="p-web"  aria-selected="true">claude.ai</button>
+    <button type="button" role="tab" id="t-code" aria-controls="p-code" aria-selected="false">Claude Code</button>
+    <button type="button" role="tab" id="t-cw"   aria-controls="p-cw"   aria-selected="false">Cowork</button>
+    <button type="button" role="tab" id="t-gpt"  aria-controls="p-gpt"  aria-selected="false">ChatGPT</button>
+  </div>
+
+  <div class="panel" id="p-web" role="tabpanel" aria-labelledby="t-web">
+    <p class="who"><span lang="he">הדרך המלאה, ובלי שורת פקודה אחת. שני החלקים מותקנים מתוך מסך ההגדרות.</span><span lang="en">The complete path, without a single command line. Both pieces install from the settings screen.</span></p>
+
+    <h3 class="ph"><span class="pnum">1</span><span lang="he">המדריך</span><span lang="en">The guide</span></h3>
+    <ol class="install">
+      <li><span lang="he"><a data-zip href="#">מורידים את הקובץ <code>matim.zip</code></a>.</span><span lang="en"><a data-zip href="#">Download <code>matim.zip</code></a>.</span></li>
+      <li><span lang="he">ב‑<a href="https://claude.ai">claude.ai</a> פותחים <kbd>Settings</kbd> ואז <kbd>Capabilities</kbd> ואז <kbd>Skills</kbd>.</span><span lang="en">In <a href="https://claude.ai">claude.ai</a> open <kbd>Settings</kbd> then <kbd>Capabilities</kbd> then <kbd>Skills</kbd>.</span></li>
+      <li><span lang="he">לוחצים <kbd>Upload skill</kbd> ובוחרים את הקובץ שהורדתם. לא צריך לפתוח אותו.</span><span lang="en">Click <kbd>Upload skill</kbd> and pick the file you downloaded. No need to unzip it.</span></li>
+    </ol>
+
+    <h3 class="ph"><span class="pnum">2</span><span lang="he">החיבור</span><span lang="en">The connector</span></h3>
+    <ol class="install">
+      <li><span lang="he">באותן הגדרות פותחים <kbd>Connectors</kbd> ולוחצים <kbd>Add custom connector</kbd>.</span><span lang="en">In the same settings open <kbd>Connectors</kbd> and click <kbd>Add custom connector</kbd>.</span></li>
+      <li><span lang="he">קוראים לו <kbd>matim</kbd> ומדביקים את הכתובת:</span><span lang="en">Name it <kbd>matim</kbd> and paste this address:</span><div class="url" data-mcp></div></li>
+      <li><span lang="he">שומרים. זהו — אפשר פשוט לשאול בעברית, ומתאים יעשה את השאר.</span><span lang="en">Save. That's it — just ask in Hebrew, and matim does the rest.</span></li>
+    </ol>
+  </div>
+
+  <div class="panel" id="p-code" role="tabpanel" aria-labelledby="t-code" hidden>
+    <p class="who"><span lang="he">בטרמינל. כאן החיבור הוא שיפור, לא תנאי — Claude Code יכול למשוך מדריך בעצמו.</span><span lang="en">In the terminal. Here the connector is an upgrade, not a requirement — Claude Code can fetch a guide on its own.</span></p>
+
+    <h3 class="ph"><span class="pnum">1</span><span lang="he">המדריך</span><span lang="en">The guide</span></h3>
+    <ol class="install">
+      <li><span lang="he">פורסים את הקובץ לתיקיית המיומנויות:</span><span lang="en">Unpack it into your skills folder:</span><div class="cmd" data-unzip></div></li>
+    </ol>
+
+    <h3 class="ph"><span class="pnum">2</span><span lang="he">החיבור</span><span lang="en">The connector</span> <span class="opt"><span lang="he">מומלץ</span><span lang="en">recommended</span></span></h3>
+    <ol class="install">
+      <li><span lang="he">פקודה אחת:</span><span lang="en">One command:</span><div class="cmd" data-cmd></div></li>
+      <li><span lang="he">בודקים ש‑<kbd>/mcp</kbd> מציג את <kbd>matim</kbd> כמחובר.</span><span lang="en">Check that <kbd>/mcp</kbd> lists <kbd>matim</kbd> as connected.</span></li>
+    </ol>
+    <p class="note"><span lang="he">בלי החיבור זה עדיין עובד: המדריך יביא את ההנחיות ישירות מהמקור. החיבור פשוט חוסך תלות ומגיע גם לגרסה העברית של כל מדריך.</span><span lang="en">It still works without the connector: the guide fetches the source directly. The connector just removes a dependency and also reaches the Hebrew version of every guide.</span></p>
+  </div>
+
+  <div class="panel" id="p-cw" role="tabpanel" aria-labelledby="t-cw" hidden>
+    <p class="who"><span lang="he">כמו ב‑claude.ai, דרך מסך ה‑Connectors, ועם אותה תיקיית מיומנויות.</span><span lang="en">Like claude.ai, through the Connectors screen, with the same skills folder.</span></p>
+    <ol class="install">
+      <li><span lang="he">מוסיפים את המדריך כמיומנות, בדיוק כמו ב‑claude.ai.</span><span lang="en">Add the guide as a skill, exactly as on claude.ai.</span></li>
+      <li><span lang="he">פותחים <kbd>Connectors</kbd>, מוסיפים connector מותאם, ומדביקים את הכתובת:</span><span lang="en">Open <kbd>Connectors</kbd>, add a custom connector, and paste the address:</span><div class="url" data-mcp></div></li>
+    </ol>
+  </div>
+
+  <div class="panel" id="p-gpt" role="tabpanel" aria-labelledby="t-gpt" hidden>
+    <p class="who"><span lang="he">כאן אין מקום להתקין מדריך, ולכן כללי הניתוב צריכים להיכנס כהוראות מודבקות. זו הדרך הפחות נוחה מהארבע, והיא דורשת הפעלת מצב מפתחים.</span><span lang="en">There's nowhere here to install a guide, so the routing rules have to be pasted in as instructions. It's the least convenient of the four, and it needs developer mode.</span></p>
+    <ol class="install">
+      <li><span lang="he">ב‑ChatGPT: <kbd>Settings</kbd> ← <kbd>Connectors</kbd> ← <kbd>Advanced</kbd>, ומפעילים <kbd>Developer mode</kbd>.</span><span lang="en">In ChatGPT: <kbd>Settings</kbd> → <kbd>Connectors</kbd> → <kbd>Advanced</kbd>, and enable <kbd>Developer mode</kbd>.</span></li>
+      <li><span lang="he">יוצרים connector חדש עם הכתובת:</span><span lang="en">Create a new connector with this address:</span><div class="url" data-mcp></div></li>
+      <li><span lang="he">מדביקים את תוכן <a data-skillmd href="#"><code>SKILL.md</code></a> להוראות המותאמות שלכם, כדי שיהיה מי שיחליט מתי להשתמש בחיבור.</span><span lang="en">Paste the contents of <a data-skillmd href="#"><code>SKILL.md</code></a> into your custom instructions, so something decides when to use the connector.</span></li>
+    </ol>
+  </div>
+
+  <div class="status" style="margin-top:26px">
+    <span class="dot"></span>
+    <div>
+      <span lang="he"><b>עדיין בבנייה.</b> השירות טרם עלה לאוויר, והכתובת שלמעלה תהיה פעילה ברגע שהוא יעלה. אין עדיין מה להתקין.</span>
+      <span lang="en"><b>Still being built.</b> The service isn't live yet, and the address above will work the moment it is. There's nothing to install yet.</span>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer><div class="wrap">
+  <p>
+    <span lang="he"><strong>מתאים הוא לקוח של skills-il, לא מתחרה שלו.</strong> skills-il הוא הקטלוג — המקור, והמקום שבו המדריכים נכתבים ונבדקים. הפרויקט הזה רק מאתר וטוען אותם, ומפנה תשומת לב ושימוש חזרה לקטלוג. תוכן המדריכים נמשך בזמן אמת מהמאגרים הפומביים ואף פעם לא משוכפל לכאן.</span>
+    <span lang="en"><strong>matim is a client for skills-il, not a competitor to it.</strong> skills-il is the catalog — the source of truth, and where guides are written and reviewed. This project only finds and loads them, sending attention and usage back to the catalog. Guide content is fetched live from the public repos and never mirrored here.</span>
+  </p>
+  <p>
+    <span lang="he">לא מסונף ל‑skills-il או ל‑YooTech, לא מופעל על ידם ולא מקבל מהם חסות. רישיון MIT — אותו רישיון כמו הקטלוג שהוא קורא.</span>
+    <span lang="en">Not affiliated with, endorsed by, or operated by skills-il or YooTech. MIT licensed — the same license as the catalog it reads.</span>
+  </p>
+  <p class="devlink">
+    <span lang="he">מפתחים? <a href="https://github.com/ilanvys/matim">הקוד, התכנון והקטלוג ב‑GitHub</a>.</span>
+    <span lang="en">A developer? <a href="https://github.com/ilanvys/matim">Code, plans, and catalog on GitHub</a>.</span>
+  </p>
+</div></footer>
+
+<script>
+(function(){
+  "use strict";
+  // One place to change when the service goes live.
+  var MCP_URL = "https://matim-mcp.vercel.app/api/mcp";
+
+  document.querySelectorAll("[data-mcp]").forEach(function(el){ el.textContent = MCP_URL; });
+  var REPO     = "https://github.com/ilanvys/matim";
+  // dist/ is gitignored, so the bundle lives on a release, not in the tree.
+  var SKILL_ZIP = REPO + "/releases/latest/download/matim.zip";
+  var SKILL_MD  = REPO + "/blob/main/SKILL.md";
+
+  document.querySelectorAll("[data-cmd]").forEach(function(el){
+    el.textContent = "claude mcp add --transport http matim " + MCP_URL;
+  });
+  document.querySelectorAll("[data-unzip]").forEach(function(el){
+    el.textContent = "curl -L -o matim.zip " + SKILL_ZIP + "\n" +
+                     "unzip matim.zip -d ~/.claude/skills/";
+  });
+  document.querySelectorAll("[data-zip]").forEach(function(el){ el.href = SKILL_ZIP; });
+  document.querySelectorAll("[data-skillmd]").forEach(function(el){ el.href = SKILL_MD; });
+
+  /* ---- language ---- */
+  var root = document.documentElement, he = document.getElementById("btn-he"), en = document.getElementById("btn-en");
+  function setLang(l){
+    root.setAttribute("data-lang", l);
+    root.setAttribute("lang", l);
+    root.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+    he.setAttribute("aria-pressed", String(l === "he"));
+    en.setAttribute("aria-pressed", String(l === "en"));
+    try { localStorage.setItem("matim-lang", l); } catch (e) {}
+  }
+  he.addEventListener("click", function(){ setLang("he"); });
+  en.addEventListener("click", function(){ setLang("en"); });
+  // Hebrew is the default; only an explicit prior choice overrides it.
+  try { if (localStorage.getItem("matim-lang") === "en") setLang("en"); } catch (e) {}
+
+  /* ---- install tabs ---- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function select(tab){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.setAttribute("tabindex", on ? "0" : "-1");
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach(function(t, i){
+    t.setAttribute("tabindex", i === 0 ? "0" : "-1");
+    t.addEventListener("click", function(){ select(t); });
+    t.addEventListener("keydown", function(e){
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      // In RTL the arrows read reversed, so follow the visual direction.
+      var rtl = root.getAttribute("dir") === "rtl";
+      var fwd = (e.key === "ArrowRight") !== rtl;
+      var next = tabs[(i + (fwd ? 1 : tabs.length - 1)) % tabs.length];
+      select(next); next.focus();
+    });
+  });
+})();
+</script>
+</body>
+</html>
