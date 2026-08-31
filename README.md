@@ -14,13 +14,15 @@ conversation for this one answer, and lets it go when the conversation ends.
 
 You never say the word "skill". You never browse a catalog. You install nothing a second time.
 
-**Status: 🚧 planning + step 1 in progress. Nothing to install yet.**
+**Status: step 1 is live.** [The skill bundle](https://github.com/ilanvys/matim/releases/latest/download/matim.zip)
+is released, `matim-mcp` is deployed, and [ilanvys.github.io/matim](https://ilanvys.github.io/matim/)
+carries the install instructions. Step 2 — the task-local runtime for Claude Code — is next.
 
 ---
 
 ## The gap
 
-[skills-il](https://agentskills.co.il/he) is a public, MIT-licensed catalog of ~217 skills
+[skills-il](https://agentskills.co.il/he) is a public, MIT-licensed catalog of 209 skills
 written for Israeli specifics — tax rules, government APIs, Hebrew formats, local law. It is
 genuinely good, and it already holds the answers to questions people ask LLMs every day.
 
@@ -54,7 +56,7 @@ The first column is why this is worth building. The second is why it's buildable
 
 ## What's actually in the catalog
 
-Measured 2026-08-29 by [`tools/build_catalog.py`](tools/build_catalog.py) against the live org:
+Measured 2026-08-31 by [`tools/build_catalog.py`](tools/build_catalog.py) against the live org:
 **209 skills across 14 categories.** Every one has consistent frontmatter, and every raw URL
 resolves.
 
@@ -67,32 +69,33 @@ its scripts actually do:
 | Flag | What the scripts do | Count | What we do instead | Works in browser chat? |
 |---|---|---|---|---|
 | `Sc` | pure computation | **119** (57%) | port the logic and compute the answer | ✅ equivalent to running it |
-| `-` | no scripts at all | **68** (33%) | follow the instructions | ✅ nothing to run |
-| `Si` | plain unauthenticated GET | **14** (7%) | read the request contract, make the real call | ⚠️ depends on fetch rules |
-| `Sx` | needs credentials, or writes | **12** (6%) | honest handoff — answer as far as we can, then point to the real thing | ❌ genuinely out of reach |
+| `-` | no scripts at all | **66** (32%) | follow the instructions | ✅ nothing to run |
+| `Si` | plain unauthenticated GET | **13** (6%) | read the request contract, make the real call | ⚠️ depends on fetch rules |
+| `Sx` | needs credentials, or writes | **11** (5%) | honest handoff — answer as far as we can, then point to the real thing | ❌ genuinely out of reach |
 
-**90% of the catalog is reachable without any network call beyond fetching the skill itself.**
-That is the number that makes a browser-only version worth building.
+**89% of the catalog — 185 of 209 — is reachable without any network call beyond fetching the
+skill itself.** That is the number that makes a browser-only version worth building.
 
 <details>
-<summary><strong>The 14 <code>Si</code> skills</strong> — need a live call to answer fully</summary>
+<summary><strong>The 13 <code>Si</code> skills</strong> — need a live call to answer fully</summary>
 
-`israel-gov-api` · `israeli-drug-database` · `israeli-election-data` · `israeli-public-transit` ·
-`israeli-statistics` · `boi-economic-data` · `shekel-currency-converter` ·
-`israeli-property-appraisal`\* · `pelecard-payment-gateway`\* · `tranzila-payment-gateway`\* ·
-`israeli-accessibility-compliance` · `shabbat-aware-scheduler` · `hebrew-survey-builder` ·
-`israeli-shelter-guide`
+`boi-economic-data` · `hebrew-survey-builder` · `israel-gov-api` ·
+`israeli-accessibility-compliance` · `israeli-election-data` · `israeli-personal-assistant` ·
+`israeli-public-transit` · `israeli-shelter-guide` · `israeli-statistics` ·
+`pelecard-payment-gateway`\* · `shabbat-aware-scheduler` · `shekel-currency-converter` ·
+`tranzila-payment-gateway`\*
 
 \* the payment gateways almost certainly need credentials in real use — the classifier only sees
 what's in the first three scripts. See the caveat below.
 </details>
 
 <details>
-<summary><strong>The 12 <code>Sx</code> skills</strong> — out of reach in a browser, by design</summary>
+<summary><strong>The 11 <code>Sx</code> skills</strong> — out of reach in a browser, by design</summary>
 
-`green-invoice` · `israeli-sms-gateway` · `israeli-whatsapp-business` · `cloudinary-assets` ·
-`hebrew-chatbot-builder` · `jfrog-devops` · `israeli-heritage-explorer` ·
-`israeli-tech-interview-prep` · `tase-stock-analysis` · and 3 more
+`cloudinary-assets` · `green-invoice` · `hebrew-chatbot-builder` · `israeli-drug-database` ·
+`israeli-heritage-explorer` · `israeli-property-appraisal` · `israeli-sms-gateway` ·
+`israeli-tech-interview-prep` · `israeli-whatsapp-business` · `jfrog-devops` ·
+`tase-stock-analysis`
 
 These send messages, upload files, or authenticate against a paid account. They are what a
 local runtime is *for*; a browser tab should not be doing them.
@@ -104,8 +107,8 @@ Grouping the 14 categories by who asks the question:
 
 | | Categories | Skills |
 |---|---|---|
-| **Everyday life** | tax-and-finance (40), government-services (30), legal-tech (18), accounting (14), health-services (11), education (6), travel (4), food-and-dining (3) | **126** (60%) |
-| **Professional / technical** | developer-tools (30), marketing-growth (13), localization (12), communication (11), security-compliance (10), courses (7) | **83** (40%) |
+| **Everyday life** | tax-and-finance (40), government-services (30), legal-tech (19), accounting (14), health-services (11), education (6), travel (4), food-and-dining (3) | **127** (61%) |
+| **Professional / technical** | developer-tools (30), marketing-growth (13), localization (12), communication (11), security-compliance (10), courses (6) | **82** (39%) |
 
 **But that table undercounts the first row, and the reason matters.** The categories describe a
 skill's technical domain, not its audience. Sorted by who actually asks:
