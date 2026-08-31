@@ -77,3 +77,21 @@ Nothing runs on push. The two checks that would have caught real bugs already:
   is not in its own tag
 
 Both are a few lines each and both correspond to mistakes that actually happened.
+
+## 7. The manifest refresh is documented but not scheduled
+
+`matim-mcp`'s README says a daily redeploy is the refresh, and `lib/upstream.ts`
+says the manifest refreshes on deploy (daily). Nothing schedules it. A rebuild
+happens only on push, so the manifest drifts from the live org at whatever rate
+skills-il changes, silently and with no failure to notice.
+
+Both repos are in sync today — 209/209, no unsafe drift — which is exactly when
+this is cheapest to fix and easiest to forget.
+
+**Fix:** a Vercel Cron, or a scheduled GitHub Action hitting a Vercel Deploy
+Hook. Either is a few lines. The build already fails loudly on a short manifest
+(`MIN_REPOS`, `MIN_SKILLS`), so a scheduled rebuild that goes wrong shows up as
+a failed deploy rather than a quietly truncated catalog.
+
+Whichever runs it, the same job should re-check catalog ↔ manifest drift in both
+directions (§6), since a refresh is exactly when the unsafe direction appears.
