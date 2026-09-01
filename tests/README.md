@@ -9,27 +9,56 @@ Two layers that fail independently, so they are tested separately.
 | Runs | automatically, in seconds | by hand, one conversation per case |
 | Fix belongs in | `matim-mcp` | `SKILL.md`, the catalog, `tools/` |
 
-A green `smoke.py` says nothing about routing. `S08` passing proves a script
-*can* be fetched — case `C03` is what proves the model actually fetches it.
+A green `smoke.py` says nothing about routing. `S08` and `S17` passing prove a
+script *can* be fetched and run — case `C03` is what proves the model actually
+fetches it.
 That distinction is the whole reason both exist: every behaviour reported so
 far has been a client-side gap sitting on top of a healthy server.
 
 ## smoke.py — the service
 
 ```bash
-python3 tests/smoke.py                 # all 12
+python3 tests/smoke.py                 # all 19
 python3 tests/smoke.py S05 S07 S08     # a subset
 MATIM_MCP_URL=http://localhost:3000/api/mcp python3 tests/smoke.py
 ```
 
-Twelve checks: protocol handshake, tool advertisement, catalog index, the
-provenance block, `SKILL_HE.md`, a `references/` file, a `scripts/` file, and
-the four recovery paths (unknown category, unknown slug, unknown file, folder).
+Nineteen checks in four groups:
+
+| | Asks |
+|---|---|
+| `S01`-`S04` | handshake, tool advertisement, the catalog index |
+| `S05`-`S12` | the files: `SKILL.md`, `SKILL_HE.md`, a `references/`, a `scripts/`, and the four recovery paths (unknown category, unknown slug, unknown file, folder) |
+| `S13`-`S16` | the splitter: a long Hebrew file stays under the measured cliff, rejoins losslessly, and every part carries the attribution duty |
+| `S17`-`S19` | the ladder's preconditions — see below |
 
 The recovery paths matter as much as the happy ones. **A failure arrives as
 ordinary text from a call that succeeded**, so a check that only asserts "no
 JSON-RPC error" would pass while the model receives `Could not reach the
 source` and treats it as content.
+
+### S17-S19 — what a server-level test *can* say about scripts and references
+
+Whether the model **decides** to fetch a script or a cited reference is
+behaviour, and is `cases.tsv` (`C01`-`C06`, `R01`-`R04`). It cannot be observed
+from here. What can be observed is whether that decision could possibly
+succeed, and each of these three preconditions fails silently:
+
+- **`S17` — the script is actionable, not merely present.** `S08` asserts the
+  reply "looks like Python", which a file cut in half also does. `S17`
+  `compile()`s it and requires an entry point. A truncated script reads as
+  source, gets ported by the model, and produces a number with no error
+  anywhere.
+- **`S18` — the skill names its own script and reference.** If the text never
+  cites `scripts/majority_threshold.py`, nothing sends a model to it, and no
+  tool description fixes that. The rung has to exist in the file being read.
+- **`S19` — no citation dangles.** A cited path that is not in
+  `list_skill_files` hands the model `"…" does not exist for …` mid-step. The
+  likely recovery is to compute from memory, which is exactly the failure the
+  script exists to prevent.
+
+Together they say: *if* the model reaches for the script, it will get something
+it can actually run. They say nothing about whether it reaches.
 
 ## cases.tsv — the model
 

@@ -9,7 +9,7 @@ here -- those are cases.tsv, run by hand on each surface. See tests/README.md.
     python3 tests/smoke.py S05 S07 S08     # only these
     MATIM_MCP_URL=... python3 tests/smoke.py
 """
-import json, os, sys, urllib.request, urllib.error
+import json, os, re, sys, urllib.request, urllib.error
 
 URL = os.environ.get("MATIM_MCP_URL", "https://matim-mcp.vercel.app/api/mcp")
 TIMEOUT = 30
@@ -24,6 +24,8 @@ LONG, LONG_FILE = "israeli-pension-advisor", "SKILL_HE.md"
 # The only measured survival: a real client cut a result that had delivered this many
 # JSON-escaped characters. Every part must land under it, with room to spare.
 CLIFF = 36_815
+# The disclosed link must be the human catalog page, not the CDN path the bytes came from.
+PAGE = "https://agentskills.co.il/he/skills"
 
 _id = [0]
 
@@ -93,11 +95,14 @@ def S04_catalog_bad_category():
 
 @check
 def S05_skill_default():
-    """get_skill defaults to SKILL.md and carries provenance"""
+    """get_skill defaults to SKILL.md, and cites the catalog page as the source"""
     t = call("get_skill", {"slug": SLUG})
-    assert t.startswith("source:"), t[:120]
+    # The source: line is the one the model is told to show the user, so it has to be a page
+    # a person can read. A raw.githubusercontent.com URL here is the bug this asserts against.
+    assert t.startswith(f"source: {PAGE}/{SLUG}"), t[:200]
+    assert "raw.githubusercontent.com" not in t.splitlines()[0], "source: is the raw file again"
+    assert t.splitlines()[1].startswith("file: https://raw.githubusercontent.com/"), t[:200]
     assert "license: MIT (skills-il)" in t, "license line missing"
-    assert "catalog: https://agentskills.co.il" in t, "catalog line missing"
 
 
 @check
@@ -114,7 +119,8 @@ def S07_reference_file():
     """a references/ file is fetchable by path"""
     t = call("get_skill", {"slug": SLUG, "file": REF})
     assert t.startswith("source:"), t[:200]
-    assert REF in t.splitlines()[0], "source line does not name the reference"
+    # source: names the skill's page; file: is what names the path actually read.
+    assert REF in t.splitlines()[1], "file: line does not name the reference"
     assert len(t) > 400, f"reference suspiciously short ({len(t)} chars)"
 
 
@@ -211,7 +217,7 @@ def S15_every_result_carries_the_attribution_duty():
         assert "[matim]" in head, "no attribution directive in the provenance block"
         assert "skills-il" in head, "skills-il is not credited"
         assert "matim" in head, "matim is not named"
-        assert head.startswith("source: https://"), "no source URL to cite"
+        assert head.startswith(f"source: {PAGE}/"), "no catalog page URL to cite"
 
 
 @check
@@ -223,6 +229,55 @@ def S16_a_non_final_part_says_so():
     assert line, "no part: line on a file that needs several"
     assert "INCOMPLETE" in line, f"part 1 does not declare itself incomplete: {line}"
     assert "part=2" in line, f"part 1 does not say how to get the rest: {line}"
+
+
+def whole(slug, file):
+    """The file itself, every part joined, with the provenance blocks stripped."""
+    return "\n".join(t.split("\n---\n\n", 1)[1] for t in parts_of(slug, file))
+
+
+CITED = re.compile(r"(?:scripts|references)/[A-Za-z0-9._-]+")
+
+
+def files_of(slug):
+    """The paths list_skill_files says exist, as a set."""
+    return set(re.findall(r"^- (\S+)", call("list_skill_files", {"slug": slug}), re.M))
+
+
+# --- the ladder's preconditions --------------------------------------------------------
+# Whether the model *decides* to fetch a script or a reference is cases.tsv (C01-C06,
+# R01-R04) and cannot be observed from here. What can be observed is whether that decision
+# could possibly succeed: the skill has to name the file, the file has to exist, and what
+# comes back has to be runnable. Each of those breaks silently -- a dangling citation hands
+# the model "does not exist for", and a truncated script still looks like source -- and each
+# one turns a compute case into a guessed number with no error anywhere.
+
+
+@check
+def S17_a_fetched_script_actually_runs():
+    """a scripts/ file comes back as complete, compilable Python -- not a truncated blob"""
+    src = whole(SLUG, SCRIPT)
+    # "looks like Python" (S08) passes on a file cut in half. Compiling does not.
+    compile(src, SCRIPT, "exec")
+    assert "def main(" in src or "__main__" in src, "no entry point -- nothing to run"
+
+
+@check
+def S18_the_skill_names_its_own_script_and_references():
+    """the Hebrew skill text cites the script and reference paths, so there is a rung to take"""
+    body = whole(SLUG, "SKILL_HE.md")
+    assert SCRIPT in body, f"SKILL_HE.md never mentions {SCRIPT} -- nothing sends a model to it"
+    assert REF in body, f"SKILL_HE.md never mentions {REF}"
+
+
+@check
+def S19_every_cited_path_exists():
+    """no skill step cites a scripts/ or references/ file that is not actually there"""
+    have = files_of(SLUG)
+    for f in ("SKILL.md", "SKILL_HE.md"):
+        cited = set(CITED.findall(whole(SLUG, f)))
+        missing = sorted(cited - have)
+        assert not missing, f"{f} cites paths that do not exist: {missing}"
 
 
 def main():
