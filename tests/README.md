@@ -62,7 +62,7 @@ it can actually run. They say nothing about whether it reaches.
 
 ## cases.tsv — the model
 
-54 cases. The plan's 50 (`plans/02-phase-1.md` §7) plus 4 `reference` cases,
+54 cases. The fifty the plan called for, plus 4 `reference` cases,
 because the plan covers scripts through the `compute` class but never checks
 that a `references/` file gets fetched when the step being followed cites it.
 
