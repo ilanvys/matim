@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "matim": {
+      "type": "http",
+      "url": "https://matim-mcp.vercel.app/api/mcp"
+    }
+  }
+}
