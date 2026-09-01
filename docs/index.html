@@ -419,19 +419,20 @@ footer p{margin-bottom:.7em}
   </div>
 
   <div class="panel" id="p-code" role="tabpanel" aria-labelledby="t-code" hidden>
-    <p class="who"><span lang="he">בטרמינל. כאן החיבור הוא שיפור, לא תנאי — Claude Code יכול למשוך מדריך בעצמו.</span><span lang="en">In the terminal. Here the connector is an upgrade, not a requirement — Claude Code can fetch a guide on its own.</span></p>
+    <p class="who"><span lang="he">בטרמינל שני החלקים נארזים יחד, אז זו התקנה אחת ולא שתיים.</span><span lang="en">In the terminal both pieces ship together, so this is one install rather than two.</span></p>
 
-    <h3 class="ph"><span class="pnum">1</span><span lang="he">המדריך</span><span lang="en">The guide</span></h3>
+    <h3 class="ph"><span class="pnum">1</span><span lang="he">התוסף — המדריך והחיבור יחד</span><span lang="en">The plugin — guide and connector together</span></h3>
     <ol class="install">
-      <li><span lang="he">פורסים את הקובץ לתיקיית המיומנויות:</span><span lang="en">Unpack it into your skills folder:</span><div class="cmd" data-unzip></div></li>
+      <li><span lang="he">בתוך Claude Code, שתי פקודות:</span><span lang="en">Inside Claude Code, two commands:</span><div class="cmd" data-plugin></div></li>
+      <li><span lang="he">בודקים ש‑<kbd>/mcp</kbd> מציג את <kbd>matim</kbd> כמחובר. זהו.</span><span lang="en">Check that <kbd>/mcp</kbd> lists <kbd>matim</kbd> as connected. That's it.</span></li>
     </ol>
 
-    <h3 class="ph"><span class="pnum">2</span><span lang="he">החיבור</span><span lang="en">The connector</span> <span class="opt"><span lang="he">מומלץ</span><span lang="en">recommended</span></span></h3>
+    <h3 class="ph"><span class="pnum">2</span><span lang="he">בלי תוסף</span><span lang="en">Without the plugin</span> <span class="opt"><span lang="he">לא חובה</span><span lang="en">optional</span></span></h3>
     <ol class="install">
-      <li><span lang="he">פקודה אחת:</span><span lang="en">One command:</span><div class="cmd" data-cmd></div></li>
-      <li><span lang="he">בודקים ש‑<kbd>/mcp</kbd> מציג את <kbd>matim</kbd> כמחובר.</span><span lang="en">Check that <kbd>/mcp</kbd> lists <kbd>matim</kbd> as connected.</span></li>
+      <li><span lang="he">אפשר גם רק את המדריך, בלי חיבור:</span><span lang="en">The guide alone, no connector:</span><div class="cmd" data-unzip></div></li>
+      <li><span lang="he">או רק את החיבור:</span><span lang="en">Or the connector alone:</span><div class="cmd" data-cmd></div></li>
     </ol>
-    <p class="note"><span lang="he">בלי החיבור זה עדיין עובד: המדריך יביא את ההנחיות ישירות מהמקור. החיבור פשוט חוסך תלות ומגיע גם לגרסה העברית של כל מדריך.</span><span lang="en">It still works without the connector: the guide fetches the source directly. The connector just removes a dependency and also reaches the Hebrew version of every guide.</span></p>
+    <p class="note"><span lang="he">גם בלי החיבור זה עובד — Claude Code יודע למשוך מדריך ישירות מהמקור. החיבור חוסך תלות ומגיע גם לגרסה העברית של כל מדריך.</span><span lang="en">It works without the connector too — Claude Code can fetch a guide straight from the source. The connector removes a dependency and also reaches the Hebrew version of every guide.</span></p>
   </div>
 
   <div class="panel" id="p-cw" role="tabpanel" aria-labelledby="t-cw" hidden>
@@ -454,8 +455,8 @@ footer p{margin-bottom:.7em}
   <div class="status" style="margin-top:26px">
     <span class="dot"></span>
     <div>
-      <span lang="he"><b>עדיין בבנייה.</b> השירות טרם עלה לאוויר, והכתובת שלמעלה תהיה פעילה ברגע שהוא יעלה. אין עדיין מה להתקין.</span>
-      <span lang="en"><b>Still being built.</b> The service isn't live yet, and the address above will work the moment it is. There's nothing to install yet.</span>
+      <span lang="he"><b>גרסה מוקדמת.</b> השירות פעיל והכתובת שלמעלה עובדת. איכות ההתאמה עדיין נמדדת, והכתובת עשויה להשתנות לפני השחרור הרשמי — נעדכן כאן.</span>
+      <span lang="en"><b>Early version.</b> The service is live and the address above works. Matching quality is still being measured, and the address may change before the public release — it will be updated here.</span>
     </div>
   </div>
 </section>
@@ -491,6 +492,9 @@ footer p{margin-bottom:.7em}
 
   document.querySelectorAll("[data-cmd]").forEach(function(el){
     el.textContent = "claude mcp add --transport http matim " + MCP_URL;
+  });
+  document.querySelectorAll("[data-plugin]").forEach(function(el){
+    el.textContent = "/plugin marketplace add ilanvys/matim\n/plugin install matim@matim";
   });
   document.querySelectorAll("[data-unzip]").forEach(function(el){
     el.textContent = "curl -L -o matim.zip " + SKILL_ZIP + "\n" +

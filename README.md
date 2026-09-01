@@ -14,9 +14,19 @@ conversation for this one answer, and lets it go when the conversation ends.
 
 You never say the word "skill". You never browse a catalog. You install nothing a second time.
 
-**Status: step 1 is live.** [The skill bundle](https://github.com/ilanvys/matim/releases/latest/download/matim.zip)
-is released, `matim-mcp` is deployed, and [ilanvys.github.io/matim](https://ilanvys.github.io/matim/)
-carries the install instructions. Step 2 — the task-local runtime for Claude Code — is next.
+**Status: early version, live.** [The skill bundle](https://github.com/ilanvys/matim/releases/latest/download/matim.zip)
+is released, `matim-mcp` is deployed, [ilanvys.github.io/matim](https://ilanvys.github.io/matim/)
+carries the install instructions, and Claude Code has a one-command plugin. What remains before a
+public release is evidence — the 54-case set has not been validated yet.
+
+**Install on Claude Code:**
+
+```
+/plugin marketplace add ilanvys/matim
+/plugin install matim@matim
+```
+
+Every other surface is on [the install page](https://ilanvys.github.io/matim/#install).
 
 ---
 
@@ -137,7 +147,13 @@ manual pass, not a fact — it decides whether an answer is computed or retrieve
 
 | Path | What |
 |---|---|
+| [`SKILL.md`](SKILL.md) | the client — when to act, how to rank, how to load, what never to claim |
+| [`catalog/`](catalog/) | the index: `_index.md` plus 14 category shards, generated |
+| [`plugin/`](plugin/) | the Claude Code plugin — **generated** from `SKILL.md` and `catalog/`, never edited by hand |
+| [`tools/`](tools/) | `build_catalog.py` builds the shards; `build_bundles.py` builds the zip and the plugin |
+| [`tests/`](tests/) | `smoke.py` tests the service, `cases.tsv` tests the model |
 | [`docs/design.md`](docs/design.md) | how it works — the mechanism, the three execution routes, and the two ways it fails |
+| [`docs/backlog.md`](docs/backlog.md) | what's known-broken or unverified, and what it costs |
 
 ## Relationship to skills-il
 
