@@ -141,9 +141,9 @@ user who cannot get the file, that link *is* the deliverable.
 - **Disclose in one line, before applying — and the line must match what actually happened.**
   There are two lines, and using the wrong one is a false statement about your own work:
 
-  | You actually read the skill file | `↯ טוען מיומנות: israeli-pension-advisor (skills-il) — לשיחה הזו בלבד` |
+  | You actually read the skill file | `↯ טוען מיומנות: israeli-pension-advisor (skills-il, דרך matim) — לשיחה הזו בלבד` |
   |---|---|
-  | You could **not** load it | `↯ יש מיומנות ייעודית: israeli-pension-advisor (skills-il), אבל לא הצלחתי לטעון אותה. עונה לפי התקציר בלבד — הקישור: <url>` |
+  | You could **not** load it | `↯ יש מיומנות ייעודית: israeli-pension-advisor (skills-il, דרך matim), אבל לא הצלחתי לטעון אותה. עונה לפי התקציר בלבד — הקישור: <url>` |
 
   `<url>` is the `source:` line from `get_skill`, or the catalog row's URL if you never got that
   far. **Never write "טוען מיומנות" / "loading skill" unless the file actually came back and you
@@ -151,6 +151,11 @@ user who cannot get the file, that link *is* the deliverable.
   not the first. Naming a skill you failed to open, in words that imply you opened it, is the same
   category of error as inventing data. If asked, you must be able to quote its first `# ` heading.
   For a plainly non-technical user, say either line in plain Hebrew without the mechanism.
+- **A part is not the file.** `get_skill` returns a long skill in numbered parts, and the
+  reply says so (`part: 2 of 5`). Reading part 1 is not reading the skill: keep calling with
+  the next part until the reply says it is the final one. Until then you may not use the first
+  line above, and you may not conclude that something is absent from a skill because you have
+  not reached the part that holds it. A cut-off section is missing, not empty.
 - **Nothing is installed**, so nothing needs uninstalling. No cleanup step.
 - These skills are **informational, never professional advice**. On tax, law, medicine and
   benefits say so once, and point to the official source.

@@ -18,6 +18,12 @@ TIMEOUT = 30
 SLUG, REF, SCRIPT = ("israeli-urban-renewal-owner-guide",
                      "references/tracks-and-majorities.md",
                      "scripts/majority_threshold.py")
+# Long enough in Hebrew to exceed one response. 27,314 characters that escape to
+# 120,378 -- the file whose live truncation at 32% is what the splitter exists for.
+LONG, LONG_FILE = "israeli-pension-advisor", "SKILL_HE.md"
+# The only measured survival: a real client cut a result that had delivered this many
+# JSON-escaped characters. Every part must land under it, with room to spare.
+CLIFF = 36_815
 
 _id = [0]
 
@@ -148,6 +154,75 @@ def S12_no_folder_fetch():
     """a folder is not a file -- it must be refused, not silently concatenated"""
     t = call("get_skill", {"slug": SLUG, "file": "references/"})
     assert "does not exist for" in t, t[:200]
+
+
+def escaped_len(t):
+    """The unit the client meters: JSON escaped to pure ASCII, where each Hebrew
+    letter widens to a six-character \\uXXXX escape."""
+    return len(json.dumps(t)) - 2
+
+
+def parts_of(slug, file):
+    """Walk a file part by part the way a model is told to, and hand back the
+    raw results plus the bodies below each provenance block."""
+    out, n = [], 1
+    while True:
+        t = call("get_skill", {"slug": slug, "file": file, "part": n})
+        out.append(t)
+        head = t.split("\n---\n\n", 1)[0]
+        line = next((l for l in head.splitlines() if l.startswith("part:")), "")
+        if not line or "final part" in line:
+            break
+        n += 1
+        assert n <= 20, "runaway paging -- no part ever declared itself final"
+    return out
+
+
+@check
+def S13_long_file_is_split_under_the_budget():
+    """a long Hebrew file is split, and every part lands under the measured cliff"""
+    got = parts_of(LONG, LONG_FILE)
+    assert len(got) > 1, f"{LONG_FILE} came back as one part; the splitter did not engage"
+    for i, t in enumerate(got, 1):
+        n = escaped_len(t)
+        assert n < CLIFF, f"part {i} is {n:,} escaped chars, at or over the {CLIFF:,} cliff"
+
+
+@check
+def S14_parts_reassemble_losslessly():
+    """the parts rejoin into the whole file, including sections past the old cut"""
+    bodies = []
+    for t in parts_of(LONG, LONG_FILE):
+        assert "\n---\n\n" in t, "no provenance separator -- cannot tell header from body"
+        bodies.append(t.split("\n---\n\n", 1)[1])
+    whole = "\n".join(bodies)
+    # Step 6 sat just past where a real client truncated this file; step 9 is the last
+    # section. Both present means nothing was dropped in the middle or off the end.
+    assert "### שלב 6" in whole, "step 6 missing -- the old truncation is not fixed"
+    assert "### שלב 9" in whole, "step 9 missing -- the tail is being dropped"
+    assert "## מלכודות נפוצות" in whole, "the gotchas section is missing"
+
+
+@check
+def S15_every_result_carries_the_attribution_duty():
+    """each get_skill result tells the caller to name the skill and credit skills-il"""
+    for t in parts_of(LONG, LONG_FILE) + [call("get_skill", {"slug": SLUG, "file": SCRIPT})]:
+        head = t.split("\n---\n\n", 1)[0]
+        assert "[matim]" in head, "no attribution directive in the provenance block"
+        assert "skills-il" in head, "skills-il is not credited"
+        assert "matim" in head, "matim is not named"
+        assert head.startswith("source: https://"), "no source URL to cite"
+
+
+@check
+def S16_a_non_final_part_says_so():
+    """a part that is not the last one is labelled incomplete and names the next"""
+    first = call("get_skill", {"slug": LONG, "file": LONG_FILE, "part": 1})
+    head = first.split("\n---\n\n", 1)[0]
+    line = next((l for l in head.splitlines() if l.startswith("part:")), "")
+    assert line, "no part: line on a file that needs several"
+    assert "INCOMPLETE" in line, f"part 1 does not declare itself incomplete: {line}"
+    assert "part=2" in line, f"part 1 does not say how to get the rest: {line}"
 
 
 def main():

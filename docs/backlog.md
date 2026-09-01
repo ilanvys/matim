@@ -3,7 +3,7 @@
 Things found while shipping step 1 that are real but were not worth stopping for.
 Ordered by how much they cost if left alone.
 
-## 1. Disclosure does not fire on a connector-only install
+## 1. Disclosure does not fire on a connector-only install  — FIXED 2026-09-01
 
 **What happens:** the model loads a skill through `get_skill` and applies it without telling
 the user which skill it used. Design rule 3 allows silence when *nothing* loads; it does not
@@ -25,7 +25,14 @@ don't print them" (§3), so it cannot carry the requirement either.
 `app/api/mcp/route.ts` — the only channel guaranteed to be in context. Keep the fuller rule in
 `SKILL.md` for installs that have it. Do not rely on `instructions` for anything load-bearing.
 
-## 2. Nothing tells the model to fetch a script for an `Sc` skill
+**Shipped.** Observed live with *both* pieces installed: the model followed §3's ladder exactly
+(so `SKILL.md` was loaded and §4 *was* in context) and still disclosed nothing. So the fix is not
+only about connector-only installs — a rule the model has read is not a rule it applies. The
+attribution duty now rides in the one channel it cannot skim past: the tool result itself,
+written as an instruction rather than as the `source:`/`license:` metadata it had been treating
+as plumbing. `SKILL.md` §4 additionally now credits matim alongside skills-il. Covered by S15.
+
+## 2. Nothing tells the model to fetch a script for an `Sc` skill  — FIXED 2026-09-01
 
 `Sc` is 119 of 209 skills — 57%, the largest group. `SKILL.md`'s flag table says to "port the
 script's logic to compute the real answer", but the model cannot port logic from a file it
@@ -38,6 +45,10 @@ prevent.
 
 **Fix:** name `scripts/` in the `get_skill` description with its own trigger condition, the way
 `references/` already has one.
+
+**Shipped.** The trigger is now "when a step asks you to compute or check a threshold and the
+skill ships a `scripts/` file for it" — with the reason attached, that the script is where the
+current rule lives. Still unmeasured against a model: C01 and C03 in `cases.tsv` are the test.
 
 ## 3. Catalog rows whose description is `>-`
 
@@ -95,3 +106,43 @@ a failed deploy rather than a quietly truncated catalog.
 
 Whichever runs it, the same job should re-check catalog ↔ manifest drift in both
 directions (§6), since a refresh is exactly when the unsafe direction appears.
+
+## 8. Hebrew tool results were being truncated at ~32%  — FIXED 2026-09-01
+
+**What happened:** a Hebrew `SKILL_HE.md` came back cut a third of the way through, with four of
+its nine steps missing, and nothing in the reply said so. The model answered anyway, from the
+breadcrumbs the surviving text left behind plus its own training data. The answer was largely
+correct, which is the dangerous part: nothing distinguishes it from the same pipeline producing
+a confident wrong answer on a skill whose truncated half held a corrected figure.
+
+**Why:** the client meters a tool result in JSON-escaped characters. Every Hebrew letter widens
+to a six-character `\uXXXX` escape, so `israeli-pension-advisor/SKILL_HE.md` — 27,314 characters,
+comfortably inside the reported "50,000 character limit" — escapes to 120,378 and is cut.
+Hebrew pays a ~4.4x inflation that ASCII does not, so **a Hebrew-first router hits this first and
+hardest**, and the smaller Hebrew file broke while the larger English one did not. English is not
+safe either: the same skill's English `SKILL.md` escapes to 35,158, within 5% of the cliff.
+
+The exact metering rule is not documented and is not simply "50,000": the observed cut had
+delivered 36,815 escaped characters. That is the only measured survival, so the budget is set
+below it rather than to the reported number.
+
+**Fix (shipped):** `lib/upstream.ts` measures the ASCII-safe escaped length itself — deliberately
+not `JSON.stringify().length`, which V8 leaves un-escaped and which would report a Hebrew file as
+its own character count and never split anything — and slices files at markdown headings into
+numbered parts, each budgeted at 30,000. `get_skill` takes a `part` argument; a non-final part
+says so and names the next one; `SKILL.md` §4 gained "a part is not the file". Covered by
+S13, S14, S16.
+
+**Still open:** the budget is derived from a single observation. If parts get split more finely
+than necessary, 36,815 is the ceiling to tune against — do not raise it without a new measurement.
+
+## 9. Hebrew queries missed the tool search entirely  — FIXED 2026-09-01
+
+Clients that defer MCP tools behind a keyword search index the tool titles and descriptions.
+Every one of ours was written in English, so on the live trace `{"query": "פנסיה עזיבת עבודה"}`
+returned **"No matching tools found."** and the tools were only reached on a second, English
+attempt. On a Hebrew-first product the *first hop* failed in Hebrew.
+
+**Fix (shipped):** all three tool titles and descriptions now carry Hebrew domain vocabulary
+alongside the English. Unverified against the live index — worth re-running the Hebrew query on
+claude.ai after deploy, since this is the one fix in this batch that `smoke.py` cannot check.
