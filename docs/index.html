@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>matim · מתאים</title>
-<meta name="description" content="שואלים בעברית, מקבלים תשובה שמתאימה לישראל. מתאים מוצא את ההנחיות הישראליות המדויקות לשאלה שלכם, משתמש בהן פעם אחת, ושוכח אותן.">
+<meta name="description" content="שואלים בעברית, ומקבלים תשובה שנשענת על המדריכים הישראליים המעודכנים — פנסיה, ביטוח, מס וזכויות. בלי לחפש, בלי להתקין, בלי מונחים טכניים.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Assistant:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -13,45 +14,33 @@
    Latin, so a bilingual page does not switch personality when the language toggle flips.
    Deliberately no serif -- the Hebrew serifs read as bureaucratic here, which is the exact
    feeling this page exists to argue against. */
+/* One palette, light only. The page is read by people who did not choose a theme and should
+   not meet a dark screen they didn't ask for -- a printed-page feel is the friendlier default
+   for an audience that is not sitting in an IDE. */
 :root{
-  --paper:#FFFFFF; --surface:#FFFFFF; --raised:#F4F6FA;
-  --ink:#12151C; --muted:#5A6472; --faint:#8B95A4;
-  --rule:#E4E9F0; --rule-soft:#EFF2F7;
-  --accent:#4F46E5; --accent-ink:#4338CA; --accent-soft:#EEEFFE;
-  --warm:#E05A38; --warm-soft:#FFF1EC;
-  --mint:#0E9E74; --sun:#D98A0B;
+  color-scheme:light;
+  --paper:#FCFBF9; --surface:#FFFFFF; --raised:#F3F5F9;
+  --ink:#14171E; --muted:#515B6B; --faint:#7C8697;
+  --rule:#E1E6EE; --rule-soft:#EDF0F5;
+  --accent:#3F5BD9; --accent-ink:#2F45B0; --accent-soft:#ECF0FE;
+  --warm:#C9532F; --warm-soft:#FDF1EC;
+  --mint:#0B8C67; --sun:#B87708;
   --display:"Rubik","Segoe UI",Arial,sans-serif;
   --sans:"Assistant","Helvetica Neue",Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --r-sm:10px; --r-md:14px; --r-lg:18px;
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#0E1117; --surface:#161A22; --raised:#1D222C;
-    --ink:#EDEFF3; --muted:#98A2B2; --faint:#6C7686;
-    --rule:#272D38; --rule-soft:#1E232C;
-    --accent:#8B85FF; --accent-ink:#A5A0FF; --accent-soft:#1E1F3A;
-    --warm:#F08359; --warm-soft:#2E1B14;
-    --mint:#3ECFA0; --sun:#EBB14A;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#0E1117; --surface:#161A22; --raised:#1D222C;
-  --ink:#EDEFF3; --muted:#98A2B2; --faint:#6C7686;
-  --rule:#272D38; --rule-soft:#1E232C;
-  --accent:#8B85FF; --accent-ink:#A5A0FF; --accent-soft:#1E1F3A;
-  --warm:#F08359; --warm-soft:#2E1B14;
-  --mint:#3ECFA0; --sun:#EBB14A;
-}
 *{box-sizing:border-box}
 html{direction:ltr}
 html[data-lang="he"]{direction:rtl}
+/* Type runs a step larger than a developer page would: the reader may be sixty-five and
+   reading this on a phone their child sent the link to. */
 body{
   margin:0; background:var(--paper); color:var(--ink);
-  font-family:var(--sans); font-size:17.5px; line-height:1.7;
+  font-family:var(--sans); font-size:18px; line-height:1.72;
   -webkit-font-smoothing:antialiased;
 }
-html[data-lang="he"] body{font-size:18.5px; line-height:1.8}
+html[data-lang="he"] body{font-size:19.5px; line-height:1.82}
 
 /* language switching */
 html[data-lang="he"] [lang="en"]{display:none}
@@ -116,6 +105,7 @@ section:first-of-type{border-top:none}
 .btn:hover{background:var(--accent-ink); border-color:var(--accent-ink); transform:translateY(-2px); box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 45%,#000)}
 .btn.ghost{background:transparent; color:var(--ink); border-color:var(--rule); box-shadow:0 2px 0 var(--rule)}
 .btn.ghost:hover{border-color:var(--accent); color:var(--accent-ink); background:transparent; box-shadow:0 4px 0 var(--rule)}
+.cta-note{margin:16px 0 0; font-size:15px; color:var(--muted); max-width:34em}
 
 /* ---------- flip: the two paths ---------- */
 .flip{display:grid; gap:12px; margin-top:44px; max-width:520px}
@@ -243,6 +233,17 @@ footer p{margin-bottom:.7em}
   background:var(--accent-soft); border-inline-start:4px solid var(--accent);
   font-size:15.5px;
 }
+/* ---------- who installs this ---------- */
+.helper{
+  display:flex; gap:14px; align-items:flex-start; margin:24px 0 0;
+  padding:18px 20px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--rule);
+  border-inline-start:4px solid var(--mint); box-shadow:0 3px 0 var(--rule-soft);
+  font-size:15.5px; line-height:1.65;
+}
+.helper .hicon{font-size:1.5rem; line-height:1.2; flex:none}
+.helper .hnote{display:inline-block; margin-top:7px; color:var(--muted); font-size:14.5px}
+
 /* ---------- panel sub-heads ---------- */
 .ph{
   display:flex; align-items:center; gap:11px; font-size:1.08rem; margin:0 0 14px;
@@ -281,17 +282,21 @@ footer p{margin-bottom:.7em}
 <header class="hero">
   <p class="eyebrow"><span lang="he">מבוסס על הקטלוג הפתוח skills-il</span><span lang="en">Built on the open skills-il catalog</span></p>
   <h1>
-    <span lang="he">שואלים בעברית. מקבלים תשובה שבאמת מתאימה לישראל.</span>
-    <span lang="en">Ask in Hebrew. Get an answer that actually fits Israel.</span>
+    <span lang="he">שואלים בעברית. התשובה נשענת על המדריכים הישראליים המעודכנים.</span>
+    <span lang="en">Ask in Hebrew. The answer leans on up-to-date Israeli guidance.</span>
   </h1>
   <p class="sub">
-    <span lang="he">מתאים מוצא את ההנחיות הישראליות המדויקות לשאלה שלכם, משתמש בהן פעם אחת, ושוכח אותן. בלי לחפש, בלי להתקין, בלי לדעת שום מונח טכני.</span>
-    <span lang="en">matim finds the Israeli guidance that fits your question, uses it once, and forgets it. No searching, no installing, no technical terms to learn.</span>
+    <span lang="he">על פנסיה, ביטוח, מס וזכויות יש מדריכים ישראליים כתובים ומתוחזקים. מתאים מביא לשיחה את המדריך הנכון בדיוק כשצריך אותו — בלי לחפש, בלי להתקין, ובלי לדעת מונח טכני אחד.</span>
+    <span lang="en">On pensions, insurance, tax and rights there are Israeli guides, written and kept current. matim brings the right one into the conversation exactly when it's needed — no searching, no installing, no technical terms to learn.</span>
   </p>
   <div class="cta">
     <a class="btn" href="#install"><span lang="he">איך מתחילים</span><span lang="en">Get started</span></a>
     <a class="btn ghost" href="#how"><span lang="he">איך זה עובד</span><span lang="en">How it works</span></a>
   </div>
+  <p class="cta-note">
+    <span lang="he">התקנה אחת של כמה דקות, ואחר כך אין מה לתחזק. אפשר בהחלט לבקש ממישהו לעשות אותה בשבילכם.</span>
+    <span lang="en">One install of a few minutes, and nothing to maintain afterwards. It's perfectly fine to ask someone to do it for you.</span>
+  </p>
 
   <div class="flip">
     <div class="old">
@@ -306,18 +311,26 @@ footer p{margin-bottom:.7em}
 </header>
 
 <section>
-  <h2><span lang="he">התשובה נשמעת בטוחה. היא פשוט לא ישראלית.</span><span lang="en">The answer sounds confident. It just isn't Israeli.</span></h2>
+  <h2><span lang="he">המדריכים כבר קיימים. הקושי הוא להגיע אליהם.</span><span lang="en">The guides already exist. Reaching them is the hard part.</span></h2>
   <p class="lede" style="margin-top:18px">
-    <span lang="he">שואלים על פנסיה, מס הכנסה, ביטוח לאומי או זכויות אחרי מילואים — ומקבלים תשובה שנכתבה לפי הכללים של מדינה אחרת. היא מנוסחת יפה, היא נשמעת סמכותית, והפרטים בה פשוט לא נכונים כאן.</span>
-    <span lang="en">You ask about pensions, income tax, National Insurance, or your rights after reserve duty — and you get an answer written for another country's rules. It reads well, it sounds authoritative, and the details are simply wrong here.</span>
+    <span lang="he">בפנסיה, בביטוח, במס ובזכויות מול הביטוח הלאומי הפרטים הישראליים משתנים משנה לשנה. מדריך ישראלי כתוב ומתוחזק, שנטען לשיחה ברגע שהוא רלוונטי, מדייק את התשובה ומעדכן אותה. זו פשוט דרך עבודה טובה יותר.</span>
+    <span lang="en">In pensions, insurance, tax, and National Insurance rights, the Israeli details shift from year to year. An Israeli guide — written, maintained, and pulled into the conversation the moment it's relevant — makes the answer sharper and more current. It's simply a better way to work.</span>
   </p>
   <p>
-    <span lang="he">הכללים הישראליים כבר כתובים, בפומבי ובחינם: <a href="https://agentskills.co.il/he">skills-il</a> הוא קטלוג פתוח של 209 מדריכים מקצועיים על מס, פנסיה, טפסים, חוק וזכויות בישראל. הם טובים, והם כבר מכילים את התשובות לשאלות שאנשים שואלים כל יום.</span>
-    <span lang="en">The Israeli rules are already written down, publicly and free: <a href="https://agentskills.co.il/he">skills-il</a> is an open catalog of 209 professional guides on tax, pensions, forms, law, and rights in Israel. They're good, and they already hold the answers people ask about every day.</span>
+    <span lang="he"><a href="https://agentskills.co.il/he">skills-il</a> הוא קטלוג פתוח וחינמי של 209 מדריכים כאלה — מס, פנסיה, ביטוח לאומי, קופות חולים, טפסים, חוק וזכויות. הם נכתבים ומתוחזקים על ידי אנשי מקצוע, והם כבר מכילים את התשובות לשאלות שנשאלות כאן כל יום.</span>
+    <span lang="en"><a href="https://agentskills.co.il/he">skills-il</a> is an open, free catalog of 209 such guides — tax, pensions, National Insurance, health funds, forms, law, and rights. They're written and maintained by professionals, and they already hold the answers to questions asked here every day.</span>
   </p>
   <p>
-    <span lang="he"><strong>הבעיה היא איך מגיעים אליהם.</strong> היום צריך לדעת שהמדריך קיים, למצוא אותו, ולהתקין אותו — ורק אז לשאול. מי שהכי צריך את המדריך הזה הוא בדיוק מי שלא יודע שהוא קיים. אי אפשר לחפש משהו שלא ידוע לך שהוא שם.</span>
-    <span lang="en"><strong>The problem is reaching them.</strong> Today you have to know the guide exists, find it, and install it — and only then ask. The person who needs it most is exactly the one who doesn't know it's there. You can't go looking for something you don't know exists.</span>
+    <span lang="he"><strong>אבל אי אפשר להכיר את כולם.</strong> כדי להשתמש במדריך צריך קודם לדעת שהוא קיים, לזהות איזה מתוך 209 מתאים לשאלה שלכם, ולהתקין אותו — ורק אז לשאול. גם מי שמכיר את הקטלוג לא זוכר את כולו, ומי שהכי היה נהנה ממדריך מסוים הוא בדיוק מי שלא יודע שהוא שם.</span>
+    <span lang="en"><strong>But nobody can know them all.</strong> Using a guide means first knowing it exists, working out which of the 209 fits your question, and installing it — and only then asking. Even people who know the catalog don't hold all of it in their head, and the person a particular guide would help most is exactly the one who doesn't know it's there.</span>
+  </p>
+  <p>
+    <span lang="he"><strong>וזה עוד לפני החלק הטכני.</strong> התקנה של מיומנות היא תפריטים, קבצים והגדרות. מי שלא גדל על מחשבים, או פשוט לא רוצה להתעסק בזה, נעצר שם — ודווקא השאלות החשובות באמת, על פנסיה, ביטוח וזכויות, נשארות עם תשובה כללית.</span>
+    <span lang="en"><strong>And that's before the technical part.</strong> Installing a skill means menus, files, and settings. Anyone who didn't grow up with computers, or simply doesn't want to deal with it, stops there — and the questions that matter most, about pensions, insurance and rights, are left with a generic answer.</span>
+  </p>
+  <p>
+    <span lang="he">מתאים הופך את הכיוון: <strong>שואלים כרגיל, והמדריך המתאים מגיע לבד.</strong> אחרי התקנה אחת אין מה לזכור, מה לחפש או מה לעדכן.</span>
+    <span lang="en">matim turns it around: <strong>you ask normally, and the right guide arrives on its own.</strong> After one install there is nothing to remember, look up, or update.</span>
   </p>
 </section>
 
@@ -327,7 +340,7 @@ footer p{margin-bottom:.7em}
   <ol class="flow">
     <li><div><b><span lang="he">שואלים שאלה רגילה, בעברית.</span><span lang="en">Ask an ordinary question, in Hebrew.</span></b><p><span lang="he">בדיוק כמו שהייתם שואלים חבר. לא צריך לומר את המילה "מיומנות" ולא צריך לדעת שקיים קטלוג.</span><span lang="en">Just like you'd ask a friend. You never say the word "skill" and never need to know a catalog exists.</span></p></div></li>
     <li><div><b><span lang="he">מתאים מזהה שיש מדריך ישראלי לשאלה הזו.</span><span lang="en">matim spots that an Israeli guide fits.</span></b><p><span lang="he">הוא סורק את הקטלוג, בוחר את המדריך שמתאים למשימה עצמה — לא למילה שבמקרה חוזרת.</span><span lang="en">It scans the catalog and picks the guide that matches the actual task — not a keyword that happens to repeat.</span></p></div></li>
-    <li><div><b><span lang="he">הוא טוען את ההנחיות האמיתיות, בזמן אמת.</span><span lang="en">It loads the real guidance, live.</span></b><p><span lang="he">ישירות מהמקור הפומבי, כדי שזה אף פעם לא יהיה גרסה ישנה. אתם מקבלים שורה אחת שאומרת איזה מדריך נטען, עם קישור אליו.</span><span lang="en">Straight from the public source, so it's never a stale copy. You get one line telling you which guide was loaded, with a link to it.</span></p></div></li>
+    <li><div><b><span lang="he">הוא טוען את ההנחיות האמיתיות, בזמן אמת.</span><span lang="en">It loads the real guidance, live.</span></b><p><span lang="he">ישירות מהמקור הפומבי, כך שזו תמיד הגרסה העדכנית ולא עותק ישן. אתם מקבלים שורה אחת שאומרת איזה מדריך נטען, עם קישור אליו — כדי שתמיד תדעו על מה התשובה נשענת.</span><span lang="en">Straight from the public source, so it's always the current version and never a stale copy. You get one line telling you which guide was loaded, with a link to it — so you always know what the answer rests on.</span></p></div></li>
     <li><div><b><span lang="he">השיחה נגמרת, והכול נשכח.</span><span lang="en">The conversation ends, and it's all forgotten.</span></b><p><span lang="he">שום דבר לא הותקן, אז שום דבר לא צריך להימחק. בפעם הבאה זה יקרה שוב מעצמו.</span><span lang="en">Nothing was installed, so nothing needs uninstalling. Next time it just happens again.</span></p></div></li>
   </ol>
 </section>
@@ -338,19 +351,19 @@ footer p{margin-bottom:.7em}
   <div class="cards">
     <div class="card">
       <p class="q"><span lang="he">״כמה פנסיה מגיע לי אם אני עוזב עכשיו?״</span><span lang="en">"How much pension am I owed if I leave now?"</span></p>
-      <p class="out"><span class="pill"><span lang="he">נכנס</span><span lang="en">steps in</span></span><span lang="he">כללי הפנסיה בישראל. ידע כללי מפספס את טופס 161 ואת רצף הזכויות.</span><span lang="en">Israeli pension rules. General knowledge gets Form 161 and continuity of rights wrong.</span></p>
+      <p class="out"><span class="pill"><span lang="he">נכנס</span><span lang="en">steps in</span></span><span lang="he">המדריך מוסיף את הכללים הישראליים עצמם — טופס 161, רצף זכויות, ומה כל בחירה עושה לכסף.</span><span lang="en">The guide adds the Israeli rules themselves — Form 161, continuity of rights, and what each choice does to the money.</span></p>
     </div>
     <div class="card">
-      <p class="q"><span lang="he">״אני עוסק פטור — מתי אני חייב לעבור למורשה?״</span><span lang="en">"I'm an exempt dealer — when must I switch to licensed?"</span></p>
-      <p class="out"><span class="pill"><span lang="he">נכנס</span><span lang="en">steps in</span></span><span lang="he">סף מחזור שמתעדכן כל שנה, וכללי מע״מ שאין להם מקבילה בחו״ל.</span><span lang="en">A turnover threshold that changes yearly, and VAT rules with no equivalent abroad.</span></p>
+      <p class="q"><span lang="he">״דחו לי בקשה בביטוח הלאומי. מה עושים עכשיו?״</span><span lang="en">"National Insurance rejected my claim. What now?"</span></p>
+      <p class="out"><span class="pill"><span lang="he">נכנס</span><span lang="en">steps in</span></span><span lang="he">כאן המסלול המדויק חשוב: איזה מסמך, לאן פונים, ובתוך כמה זמן. פרטים שמתעדכנים, וכתובים במדריך.</span><span lang="en">Here the exact route matters: which document, where to file, within what deadline. Details that change, and are written down in the guide.</span></p>
     </div>
     <div class="card quiet">
       <p class="q"><span lang="he">״תסכם לי את המייל הזה״</span><span lang="en">"Summarize this email for me"</span></p>
       <p class="out"><span class="pill"><span lang="he">שותק</span><span lang="en">stays quiet</span></span><span lang="he">המייל בעברית, אבל המשימה היא סיכום. אין כאן שום דבר ישראלי לפתור.</span><span lang="en">The email is in Hebrew, but the task is summarizing. Nothing Israeli to solve.</span></p>
     </div>
     <div class="card quiet">
-      <p class="q"><span lang="he">״תכתוב פונקציה שמחשבת מע״מ 18%״</span><span lang="en">"Write a function that computes 18% VAT"</span></p>
-      <p class="out"><span class="pill"><span lang="he">שותק</span><span lang="en">stays quiet</span></span><span lang="he">אתם כבר נתתם את הכלל. מדריך פה היה מקשט, לא משנה את התשובה.</span><span lang="en">You already gave the rule. A guide here would decorate, not change the answer.</span></p>
+      <p class="q"><span lang="he">״תנסח לי הודעה לוועד הבית״</span><span lang="en">"Draft a note to the building committee"</span></p>
+      <p class="out"><span class="pill"><span lang="he">שותק</span><span lang="en">stays quiet</span></span><span lang="he">בקשה רגילה בעברית. מדריך פה רק היה מוסיף עיכוב, לא דיוק.</span><span lang="en">An ordinary Hebrew request. A guide here would add delay, not accuracy.</span></p>
     </div>
   </div>
   <p style="margin-top:26px">
@@ -376,6 +389,14 @@ footer p{margin-bottom:.7em}
     <span lang="en">matim is two things doing different jobs. Everywhere except ChatGPT you install both, and it takes a few minutes.</span>
   </p>
 
+  <div class="helper">
+    <span class="hicon" aria-hidden="true">☕</span>
+    <div>
+      <span lang="he"><strong>מתקינים בשביל ההורים?</strong> זה החלק היחיד שדורש מישהו שמסתדר עם מסכי הגדרות — כמה דקות, פעם אחת. אחר כך אין מה לתחזק, אין מה לעדכן, ואין שום דבר חדש ללמוד: הם ממשיכים לשאול בעברית בדיוק כמו קודם, והמדריכים מגיעים מעצמם.<br><span class="hnote">ואם אתם ההורים — אפשר פשוט לשלוח את הדף הזה למי שמתקין לכם דברים.</span></span>
+      <span lang="en"><strong>Installing this for a parent?</strong> This is the only part that needs someone comfortable with settings screens — a few minutes, once. After that there's nothing to maintain, nothing to update, and nothing new to learn: they keep asking in Hebrew exactly as before, and the guides arrive on their own.<br><span class="hnote">And if you're the parent — just send this page to whoever installs things for you.</span></span>
+    </div>
+  </div>
+
   <div class="pieces">
     <div class="piece">
       <span class="ptag"><span lang="he">חלק א׳</span><span lang="en">Piece 1</span></span>
@@ -391,6 +412,11 @@ footer p{margin-bottom:.7em}
   <p class="whyboth">
     <span lang="he"><strong>אחד בלי השני עובד חצי.</strong> בלי המדריך אף אחד לא יחליט להשתמש בקטלוג, גם אם החיבור מותקן. בלי החיבור המדריך יידע מה הוא רוצה, אבל יצטרך להסתפק בסיכום מהאתר במקום בהנחיות המלאות.</span>
     <span lang="en"><strong>Either one alone works at half strength.</strong> Without the guide, nothing decides to use the catalog — even with the connector installed. Without the connector, the guide knows what it wants but has to settle for a summary from the website instead of the full instructions.</span>
+  </p>
+
+  <p style="margin:30px 0 0" class="pick">
+    <span lang="he"><strong>איפה אתם משתמשים ב‑AI?</strong> בוחרים למטה. רוב האנשים משתמשים ב‑claude.ai בדפדפן — זו האפשרות הראשונה, וכולה מסכי הגדרות בלי שורת פקודה אחת.</span>
+    <span lang="en"><strong>Where do you use AI?</strong> Pick below. Most people use claude.ai in the browser — that's the first option, and it's all settings screens with no command line at all.</span>
   </p>
 
   <div class="tabs" role="tablist" aria-label="Install target">
