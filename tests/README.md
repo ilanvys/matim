@@ -1,13 +1,19 @@
 # Tests
 
-Two layers that fail independently, so they are tested separately.
+Three layers that fail independently, so they are tested separately.
 
-| | `smoke.py` | `cases.tsv` |
-|---|---|---|
-| Tests | the service | the model's behaviour |
-| Answers | can the file be fetched? | did it decide to fetch, and say so? |
-| Runs | automatically, in seconds | by hand, one conversation per case |
-| Fix belongs in | `matim-mcp` | `SKILL.md`, the catalog, `tools/` |
+| | `smoke.py` | `cases.tsv` | `rubrics/` |
+|---|---|---|---|
+| Tests | the service | the model's routing | the answer |
+| Answers | can the file be fetched? | did it decide to fetch, and say so? | having routed right, was the answer any good? |
+| Runs | automatically, in seconds | by hand, one conversation per case | a judge, per transcript, with the source file in context |
+| Fix belongs in | `matim-mcp` | `SKILL.md`, the catalog, `tools/` | often nowhere here — a real finding about the upstream skill |
+
+A green `cases.tsv` says nothing about the answer. A case can pick the right
+skill, fetch it, disclose it correctly — four green failure points — and still
+hand back a paraphrase of pretraining with the skill's name attached to it.
+`rubrics/` is the layer that catches that; see `rubrics/README.md`. `H01`-`H10`
+are written; the remaining 44 are not.
 
 A green `smoke.py` says nothing about routing. `S08` and `S17` passing prove a
 script *can* be fetched and run — case `C03` is what proves the model actually
